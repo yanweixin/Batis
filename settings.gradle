@@ -1,0 +1,6 @@
+rootProject.name = 'batis'
+
+include 'application'
+include 'library'
+include 'util'
+include 'benchmark'
