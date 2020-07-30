@@ -12,10 +12,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @MappedSuperclass
-public abstract class BaseEntity implements Serializable {
-    @Id
-    private Long id;
-
+public abstract class BaseEntity extends IdEntity implements Serializable {
     @NotNull
     @CreatedBy
     private Long createdBy;
@@ -37,14 +34,6 @@ public abstract class BaseEntity implements Serializable {
     @Version
     @NotNull
     private Long objectVersionNumber;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @PrePersist
     public void preparePersist() {

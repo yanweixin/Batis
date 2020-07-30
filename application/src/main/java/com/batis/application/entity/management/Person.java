@@ -1,22 +1,21 @@
-package com.batis.application.entity.permission;
+package com.batis.application.entity.management;
 
 import com.batis.application.entity.BaseEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-@Entity
-public class User extends BaseEntity {
-    @NotNull
-    @Column(unique = true)
-    private String userCode;
+@MappedSuperclass
+public abstract class Person extends BaseEntity {
 
     @NotNull
-    private String userName;
+    private String firstName;
+
+    @NotNull
+    private String lastName;
 
     @NotNull
     private String password;
@@ -37,20 +36,20 @@ public class User extends BaseEntity {
     @NotNull
     private Boolean enabled;
 
-    public String getUserCode() {
-        return userCode;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setUserCode(String userCode) {
-        this.userCode = userCode;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPassword() {

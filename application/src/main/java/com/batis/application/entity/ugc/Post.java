@@ -2,7 +2,7 @@ package com.batis.application.entity.ugc;
 
 import com.batis.application.entity.BaseEntity;
 import com.batis.application.entity.base.DeviceInfo;
-import com.batis.application.entity.permission.User;
+import com.batis.application.entity.management.User;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

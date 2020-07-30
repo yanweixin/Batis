@@ -1,4 +1,4 @@
-package com.batis.application.entity.permission;
+package com.batis.application.entity.management;
 
 import com.batis.application.entity.BaseEntity;
 
