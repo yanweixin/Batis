@@ -1,36 +1,46 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+
 buildscript {
-	repositories {
-		mavenCentral()
-	}
+    repositories {
+        mavenCentral()
+    }
 }
 
 plugins {
-	id 'java-library'
-	id 'org.springframework.boot' version "${springBoot}"
-	id 'io.spring.dependency-management' version "${dependencyManagement}"
+    id 'java-library'
+    id 'org.springframework.boot' version "${springBoot}"
+    id 'io.spring.dependency-management' version "${dependencyManagement}"
 }
 
 allprojects {
-	group = 'com.batis'
-	version = '0.0.1-SNAPSHOT'
-	sourceCompatibility = '1.8'
+    group = 'com.batis'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '1.8'
 }
 subprojects {
 
-	apply plugin: 'org.springframework.boot'
-	apply plugin: 'io.spring.dependency-management'
-	apply plugin: 'java-library'
-	apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java-library'
+    apply plugin: 'java'
 
-	repositories {
-		mavenCentral()
-	}
+    repositories {
+        mavenCentral()
+    }
 
-	test {
-		useJUnitPlatform()
-	}
+    test {
+        useJUnitPlatform()
+        testLogging.showStandardStreams(true)
+        testLogging.exceptionFormat(TestExceptionFormat.FULL)
+    }
+
+    configurations {
+        all {
+            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        }
+    }
 }
 
 bootJar {
-	enabled = false
+    enabled = false
 }

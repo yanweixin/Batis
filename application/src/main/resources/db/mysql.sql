@@ -1,6 +1,7 @@
-# create user
-CREATE USER 'apps'@'%' IDENTIFIED WITH mysql_native_password BY 'apps';
-GRANT ALL PRIVILEGES ON *.* TO 'apps'@'%';
-
 # create database
-CREATE DATABASE app;
+CREATE DATABASE IF NOT EXISTS app;
+
+# create user
+DROP USER IF EXISTS apps;
+CREATE USER IF NOT EXISTS 'apps'@'%' IDENTIFIED WITH caching_sha2_password BY 'apps';
+GRANT ALL PRIVILEGES ON app.* TO 'apps'@'%';

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <Property name="baseDir">build/logs</Property>
+        <Property name="LOG_EXCEPTION_CONVERSION_WORD">%xwEx</Property>
+        <Property name="LOG_LEVEL_PATTERN">%5p</Property>
+        <Property name="TIME_FORMAT_PATTERN">HH:mm:ss.SSS</Property>
+        <Property name="DATETIME_FORMAT_PATTERN">yyyy-MM-dd ${TIME_FORMAT_PATTERN}</Property>
+        <Property name="LOG_STYLE">{FATAL=Bright red, ERROR=red, WARN=blue, INFO=black, DEBUG=green, TRACE=blue}
+        </Property>
+        <Property name="CONSOLE_LOG_PATTERN">%highlight{%d{${TIME_FORMAT_PATTERN}} %-5p [%t] %c{1} - %m%n}
+        </Property>
+        <Property name="FILE_LOG_PATTERN">%d{${DATETIME_FORMAT_PATTERN}} %p [%t %T] [%c][%C] [%t] %m%n</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${CONSOLE_LOG_PATTERN}${LOG_STYLE}"/>
+        </Console>
+        <RollingRandomAccessFile name="RollingRandomAccessFile" fileName="${baseDir}/application.log"
+                                 immediateFlush="false"
+                                 filePattern="${baseDir}/$${date:yyyy-MM}/application-%d{yyyy-MM-dd-HH}-%i.log.gz">
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout>
+                <Pattern>${FILE_LOG_PATTERN}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="1 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20">
+                <Delete basePath="${baseDir}" maxDepth="2">
+                    <IfFileName glob="*/application-*.log.gz">
+                        <IfLastModified age="30d">
+                            <IfAny>
+                                <IfAccumulatedFileSize exceeds="1 GB"/>
+                                <IfAccumulatedFileCount exceeds="10"/>
+                            </IfAny>
+                        </IfLastModified>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingRandomAccessFile>
+        <JDBC name="databaseAppender" tableName="log.application_log" ignoreExceptions="false">
+            <ConnectionFactory class="com.batis.application.config.ConnectionFactory" method="getDatabaseConnection"/>
+            <Column name="timestamp" isEventTimestamp="true"/>
+            <Column name="level" pattern="%level"/>
+            <Column name="logger" pattern="%logger"/>
+            <Column name="marker" pattern="%marker"/>
+            <Column name="message" pattern="%message"/>
+            <Column name="exception" pattern="%ex{full}"/>
+            <Column name="process_id" pattern="%pid"/>
+            <Column name="thread_id" pattern="%threadId"/>
+            <Column name="thread_name" pattern="%threadName"/>
+            <Column name="thread_priority" pattern="%threadPriority"/>
+        </JDBC>
+        <NoSql name="MongoAppender">
+            <ThresholdFilter level="TRACE"/>
+            <MongoDb3 databaseName="logdb" collectionName="applicationLog" server="192.168.4.130"
+                      username="logs" password="logs"/>
+        </NoSql>
+        <Async name="Async">
+            <AppenderRef ref="RollingRandomAccessFile"/>
+            <AppenderRef ref="databaseAppender"/>
+        </Async>
+    </Appenders>
+    <Loggers>
+        <!--        <Logger name="org.apache.catalina.startup.DigesterFactory" level="error"/>-->
+        <!--        <Logger name="org.apache.catalina.util.LifecycleBase" level="error"/>-->
+        <!--        <Logger name="org.apache.coyote.http11.Http11NioProtocol" level="warn"/>-->
+        <!--        <Logger name="org.apache.sshd.common.util.SecurityUtils" level="warn"/>-->
+        <!--        <Logger name="org.apache.tomcat.util.net.NioSelectorPool" level="warn"/>-->
+        <!--        <Logger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="error"/>-->
+        <!--        <Logger name="org.hibernate.validator.internal.util.Version" level="warn"/>-->
+        <!--        <Logger name="org.springframework.boot.actuate.endpoint.jmx" level="warn"/>-->
+
+        <!-- Log everything in hibernate -->
+        <Logger name="org.hibernate" level="INFO" additivity="false">
+            <AppenderRef ref="Async"/>
+<!--            <AppenderRef ref="MongoAppender"/>-->
+        </Logger>
+        <!-- Log SQL statements -->
+        <Logger name="org.hibernate.SQL" level="debug">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <!-- Log all JDBC parameters -->
+        <Logger name="org.hibernate.type" level="trace">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <!-- Log custom packages -->
+        <Logger name="com.batis" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Async"/>
+<!--            <AppenderRef ref="MongoAppender"/>-->
+        </Logger>
+
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Async"/>
+<!--            <AppenderRef ref="MongoAppender"/>-->
+        </Root>
+    </Loggers>
+</Configuration>
