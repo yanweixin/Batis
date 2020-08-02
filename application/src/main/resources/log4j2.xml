@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
     <Properties>
-        <Property name="baseDir">build/logs</Property>
+        <Property name="baseDir">logs</Property>
         <Property name="LOG_EXCEPTION_CONVERSION_WORD">%xwEx</Property>
         <Property name="LOG_LEVEL_PATTERN">%5p</Property>
         <Property name="TIME_FORMAT_PATTERN">HH:mm:ss.SSS</Property>
         <Property name="DATETIME_FORMAT_PATTERN">yyyy-MM-dd ${TIME_FORMAT_PATTERN}</Property>
         <Property name="LOG_STYLE">{FATAL=Bright red, ERROR=red, WARN=blue, INFO=black, DEBUG=green, TRACE=blue}
         </Property>
-        <Property name="CONSOLE_LOG_PATTERN">%highlight{%d{${TIME_FORMAT_PATTERN}} %-5p [%t] %c{1} - %m%n}
+        <Property name="CONSOLE_LOG_PATTERN">%d{${TIME_FORMAT_PATTERN}}{GMT+8}{faint} [%highlight{%-5p}${LOG_STYLE}] [%t] %c{1.} - %highlight{%m%n%throwable}${LOG_STYLE}
         </Property>
-        <Property name="FILE_LOG_PATTERN">%d{${DATETIME_FORMAT_PATTERN}} %p [%t %T] [%c][%C] [%t] %m%n</Property>
+        <Property name="FILE_LOG_PATTERN">%d{${DATETIME_FORMAT_PATTERN}}{GMT+8} ${LOG_LEVEL_PATTERN} [%t %T] [%c] %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}
+        </Property>
     </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="${CONSOLE_LOG_PATTERN}${LOG_STYLE}"/>
+            <PatternLayout pattern="${CONSOLE_LOG_PATTERN}"/>
         </Console>
         <RollingRandomAccessFile name="RollingRandomAccessFile" fileName="${baseDir}/application.log"
                                  immediateFlush="false"
@@ -41,12 +42,18 @@
                 </Delete>
             </DefaultRolloverStrategy>
         </RollingRandomAccessFile>
-        <JDBC name="databaseAppender" tableName="log.application_log" ignoreExceptions="false">
+        <JDBC name="jdbcAppender" tableName="log.application_log" ignoreExceptions="false">
             <ConnectionFactory class="com.batis.application.config.ConnectionFactory" method="getDatabaseConnection"/>
+            <ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
             <Column name="timestamp" isEventTimestamp="true"/>
             <Column name="level" pattern="%level"/>
             <Column name="logger" pattern="%logger"/>
             <Column name="marker" pattern="%marker"/>
+            <Column name="location" pattern="%location"/>
+            <Column name="caller_filename" pattern="%file"/>
+            <Column name="caller_class" pattern="%class"/>
+            <Column name="caller_method" pattern="%method"/>
+            <Column name="caller_line" pattern="%line"/>
             <Column name="message" pattern="%message"/>
             <Column name="exception" pattern="%ex{full}"/>
             <Column name="process_id" pattern="%pid"/>
@@ -61,7 +68,7 @@
         </NoSql>
         <Async name="Async">
             <AppenderRef ref="RollingRandomAccessFile"/>
-            <AppenderRef ref="databaseAppender"/>
+            <AppenderRef ref="Console"/>
         </Async>
     </Appenders>
     <Loggers>
@@ -77,27 +84,28 @@
         <!-- Log everything in hibernate -->
         <Logger name="org.hibernate" level="INFO" additivity="false">
             <AppenderRef ref="Async"/>
-<!--            <AppenderRef ref="MongoAppender"/>-->
+            <AppenderRef ref="MongoAppender"/>
+            <AppenderRef ref="jdbcAppender"/>
         </Logger>
         <!-- Log SQL statements -->
         <Logger name="org.hibernate.SQL" level="debug">
-            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Async"/>
         </Logger>
         <!-- Log all JDBC parameters -->
         <Logger name="org.hibernate.type" level="trace">
-            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Async"/>
         </Logger>
         <!-- Log custom packages -->
         <Logger name="com.batis" level="debug" additivity="false">
-            <AppenderRef ref="Console"/>
             <AppenderRef ref="Async"/>
-<!--            <AppenderRef ref="MongoAppender"/>-->
+            <AppenderRef ref="jdbcAppender"/>
         </Logger>
 
         <Root level="INFO">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Async"/>
-<!--            <AppenderRef ref="MongoAppender"/>-->
+            <AppenderRef ref="MongoAppender"/>
+            <AppenderRef ref="jdbcAppender"/>
         </Root>
     </Loggers>
 </Configuration>

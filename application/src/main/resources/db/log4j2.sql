@@ -15,17 +15,21 @@ COMMIT;
 BEGIN;
 CREATE TABLE application_log
 (
-    log_id          BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    timestamp       DATETIME,
-    level           VARCHAR(254),
-    logger          VARCHAR(254),
+    log_id          BIGINT       NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    timestamp       DATETIME     NOT NULL,
+    level           VARCHAR(254) NOT NULL,
+    logger          VARCHAR(254) NOT NULL,
     marker          VARCHAR(254),
     message         TEXT,
-    source          TEXT,
-    process_id      INT,
-    thread_id       INT,
-    thread_name     VARCHAR(254),
-    thread_priority INT,
+    location        TEXT,
+    caller_filename VARCHAR(254),
+    caller_class    VARCHAR(254),
+    caller_method   VARCHAR(254),
+    caller_line     CHAR(4),
+    process_id      INT          NOT NULL,
+    thread_id       INT          NOT NULL,
+    thread_name     VARCHAR(254) NOT NULL,
+    thread_priority INT          NOT NULL,
     exception       TEXT
 );
 COMMIT;
@@ -38,4 +42,5 @@ FROM application_log
 WHERE level = 'ERROR';
 SELECT *
 FROM application_log
-WHERE logger LIKE 'org.hibernate.%';
+WHERE logger LIKE 'org.hibernate.%'
+ORDER BY log_id DESC;
