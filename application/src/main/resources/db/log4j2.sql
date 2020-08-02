@@ -42,5 +42,5 @@ FROM application_log
 WHERE level = 'ERROR';
 SELECT *
 FROM application_log
-WHERE logger LIKE 'org.hibernate.%'
+# WHERE logger LIKE 'org.hibernate.%'
 ORDER BY log_id DESC;

@@ -7,8 +7,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class ConnectionFactory {
-    private static interface Singleton {
-        final ConnectionFactory INSTANCE = new ConnectionFactory();
+    private interface Singleton {
+        ConnectionFactory INSTANCE = new ConnectionFactory();
     }
 
     private final DataSource dataSource;

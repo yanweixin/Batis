@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
     <Properties>
-        <Property name="baseDir">logs</Property>
+        <Property name="baseDir">data/logs</Property>
         <Property name="LOG_EXCEPTION_CONVERSION_WORD">%xwEx</Property>
         <Property name="LOG_LEVEL_PATTERN">%5p</Property>
         <Property name="TIME_FORMAT_PATTERN">HH:mm:ss.SSS</Property>
         <Property name="DATETIME_FORMAT_PATTERN">yyyy-MM-dd ${TIME_FORMAT_PATTERN}</Property>
-        <Property name="LOG_STYLE">{FATAL=Bright red, ERROR=red, WARN=blue, INFO=black, DEBUG=green, TRACE=blue}
+        <Property name="LOG_STYLE">{FATAL=Bright red, ERROR=red, WARN=Bright yellow, INFO=Green, DEBUG=blue, TRACE=Bright white}
         </Property>
-        <Property name="CONSOLE_LOG_PATTERN">%d{${TIME_FORMAT_PATTERN}}{GMT+8}{faint} [%highlight{%-5p}${LOG_STYLE}] [%t] %c{1.} - %highlight{%m%n%throwable}${LOG_STYLE}
+        <Property name="CONSOLE_LOG_PATTERN">%d{${TIME_FORMAT_PATTERN}}{GMT+8} [%highlight{%-5p}${LOG_STYLE}] %magenta{[%t %T %pid]} %style{%c{1.}}{bright,cyan} - %highlight{%m%n%throwable}${LOG_STYLE}
         </Property>
-        <Property name="FILE_LOG_PATTERN">%d{${DATETIME_FORMAT_PATTERN}}{GMT+8} ${LOG_LEVEL_PATTERN} [%t %T] [%c] %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}
+        <Property name="FILE_LOG_PATTERN">%d{${DATETIME_FORMAT_PATTERN}}{GMT+8} ${LOG_LEVEL_PATTERN} [%t %T %pid] [%c] %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}
         </Property>
     </Properties>
     <Appenders>
@@ -88,24 +88,19 @@
             <AppenderRef ref="jdbcAppender"/>
         </Logger>
         <!-- Log SQL statements -->
-        <Logger name="org.hibernate.SQL" level="debug">
-            <AppenderRef ref="Async"/>
-        </Logger>
+        <Logger name="org.hibernate.SQL" level="debug"/>
         <!-- Log all JDBC parameters -->
-        <Logger name="org.hibernate.type" level="trace">
-            <AppenderRef ref="Async"/>
-        </Logger>
+        <Logger name="org.hibernate.type" level="trace"/>
         <!-- Log custom packages -->
         <Logger name="com.batis" level="debug" additivity="false">
             <AppenderRef ref="Async"/>
+            <AppenderRef ref="MongoAppender"/>
             <AppenderRef ref="jdbcAppender"/>
         </Logger>
 
         <Root level="INFO">
-            <AppenderRef ref="Console"/>
             <AppenderRef ref="Async"/>
             <AppenderRef ref="MongoAppender"/>
-            <AppenderRef ref="jdbcAppender"/>
         </Root>
     </Loggers>
 </Configuration>
