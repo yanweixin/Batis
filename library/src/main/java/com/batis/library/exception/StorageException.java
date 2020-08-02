@@ -1,4 +1,4 @@
-package com.batis.application.exception;
+package com.batis.library.exception;
 
 public class StorageException extends RuntimeException {
 

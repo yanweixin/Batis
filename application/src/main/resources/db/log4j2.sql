@@ -39,7 +39,8 @@ FROM application_log;
 TRUNCATE TABLE application_log;
 SELECT *
 FROM application_log
-WHERE level = 'ERROR';
+ORDER BY log_id DESC
+LIMIT 0,10;
 SELECT *
 FROM application_log
 # WHERE logger LIKE 'org.hibernate.%'

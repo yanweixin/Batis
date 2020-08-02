@@ -1,7 +1,6 @@
 package com.batis.application.entity.management;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -12,6 +11,13 @@ public class User extends Person {
 
     @NotNull
     private String userName;
+
+    @Override
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Long getId() {
+        return super.getId();
+    }
 
     public String getUserCode() {
         return userCode;

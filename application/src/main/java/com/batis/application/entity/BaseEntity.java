@@ -1,9 +1,12 @@
 package com.batis.application.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -18,7 +21,8 @@ public abstract class BaseEntity extends IdEntity implements Serializable {
     private Long createdBy;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @NotNull
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS",timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     @CreatedDate
     private Date createdAt;
 
@@ -27,6 +31,7 @@ public abstract class BaseEntity extends IdEntity implements Serializable {
     private Long updatedBy;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS",timezone = "GMT+8")
     @NotNull
     @LastModifiedDate
     private Date updatedAt;

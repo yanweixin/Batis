@@ -3,11 +3,10 @@ package com.batis.application.controller.management;
 import com.batis.application.entity.management.User;
 import com.batis.application.repository.management.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("management/users")
@@ -16,12 +15,18 @@ public class UserController {
     UserRepository userRepository;
 
     @GetMapping("/")
-    public List<User> getUserList(){
+    public List<User> getUserList() {
         return userRepository.findAll();
     }
 
-//    @GetMapping("/")
-//    public List<User> findUserByUserCodeAndName(){
-//
-//    }
+    @GetMapping("/{id}")
+    public Optional<User> getUserById(@PathVariable Long id){
+        return userRepository.findById(id);
+    }
+
+    @PostMapping("/")
+    public List<User> addUsers(@RequestBody List<User> users) {
+        return userRepository.saveAll(users);
+    }
+
 }

@@ -10,8 +10,8 @@ import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
 
 import com.batis.application.config.StorageProperties;
-import com.batis.application.exception.StorageException;
-import com.batis.application.exception.StorageFileNotFoundException;
+import com.batis.library.exception.StorageException;
+import com.batis.library.exception.StorageFileNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
