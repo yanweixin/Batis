@@ -63,7 +63,7 @@
         </JDBC>
         <NoSql name="MongoAppender">
             <ThresholdFilter level="TRACE"/>
-            <MongoDb3 databaseName="logdb" collectionName="applicationLog" server="192.168.4.130"
+            <MongoDb3 databaseName="logdb" collectionName="applicationLog" server="dev-server"
                       username="logs" password="logs"/>
         </NoSql>
         <Async name="Async">

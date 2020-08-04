@@ -13,5 +13,8 @@ DELETE
 FROM user
 WHERE 1 = 1;
 
-LECT *
+SELECT *
 FROM mysql.time_zone_name
+WHERE Name LIKE 'Asia%';
+
+SELECT now();
