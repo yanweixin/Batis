@@ -1,6 +1,7 @@
 package com.batis.application.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -10,10 +11,17 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Objects;
 
 @MappedSuperclass
+@JsonIgnoreProperties({"createdBy","createdAt","updatedBy","updatedAt","objectVersionNumber"})
 public abstract class BaseEntity extends IdEntity implements Serializable {
     @NotNull
     @CreatedBy
@@ -39,20 +47,27 @@ public abstract class BaseEntity extends IdEntity implements Serializable {
     @NotNull
     private Long objectVersionNumber;
 
+    private Date getNow(){
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        return new Date();
+    }
+
     @PrePersist
     public void preparePersist() {
         if (Objects.isNull(this.createdAt)) {
             this.createdBy = -1L;
             this.updatedBy = -1L;
-            this.createdAt = new Date();
-            this.updatedAt = new Date();
+            this.createdAt = getNow();
+            this.updatedAt = getNow();
             this.objectVersionNumber = 1L;
         }
     }
 
     @PreUpdate
     public void prepareUpdate() {
-        this.updatedAt = new Date();
+        this.updatedBy = -1L;
+        this.updatedAt = getNow();
         this.objectVersionNumber += 1;
     }
 

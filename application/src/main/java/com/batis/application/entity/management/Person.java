@@ -1,6 +1,8 @@
 package com.batis.application.entity.management;
 
 import com.batis.application.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
@@ -18,9 +20,11 @@ public abstract class Person extends BaseEntity {
     private String lastName;
 
     @NotNull
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
 
     private String gender;
