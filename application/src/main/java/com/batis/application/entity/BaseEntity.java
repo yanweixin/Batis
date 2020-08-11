@@ -20,7 +20,7 @@ public abstract class BaseEntity extends IdEntity implements Serializable {
     private Long createdBy;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     @CreatedDate
     private Date createdAt;
@@ -30,7 +30,7 @@ public abstract class BaseEntity extends IdEntity implements Serializable {
     private Long updatedBy;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "GMT+8")
     @NotNull
     @LastModifiedDate
     private Date updatedAt;
@@ -42,6 +42,8 @@ public abstract class BaseEntity extends IdEntity implements Serializable {
     @PrePersist
     public void preparePersist() {
         if (Objects.isNull(this.createdAt)) {
+            this.createdBy = -1L;
+            this.updatedBy = -1L;
             this.createdAt = new Date();
             this.updatedAt = new Date();
             this.objectVersionNumber = 1L;

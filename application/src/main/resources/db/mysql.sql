@@ -8,6 +8,12 @@ GRANT ALL PRIVILEGES ON app.* TO 'apps'@'%';
 
 SELECT *
 FROM user;
+SELECT *
+FROM device_info;
+SELECT (SELECT * FROM user WHERE user.id = post.author_id)
+FROM post;
+SELECT *
+FROM content;
 
 DELETE
 FROM user

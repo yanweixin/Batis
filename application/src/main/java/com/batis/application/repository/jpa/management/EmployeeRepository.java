@@ -1,4 +1,4 @@
-package com.batis.application.repository.management;
+package com.batis.application.repository.jpa.management;
 
 import com.batis.application.entity.management.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -3,26 +3,25 @@ package com.batis.application.entity.ugc;
 import com.batis.application.entity.BaseEntity;
 import com.batis.application.entity.base.DeviceInfo;
 import com.batis.application.entity.management.User;
+import org.springframework.data.elasticsearch.annotations.Document;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Document(indexName = "test-post")
 public class Post extends BaseEntity {
 
     @NotNull
-    @ManyToOne (fetch = FetchType.LAZY)
+    @ManyToOne
     private User author;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private DeviceInfo deviceInfo;
 
     @NotNull
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Content content;
 
     @ManyToOne

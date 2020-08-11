@@ -1,11 +1,10 @@
 package com.batis.application.controller.management;
 
 import com.batis.application.entity.management.User;
-import com.batis.application.repository.management.UserRepository;
+import com.batis.application.repository.jpa.management.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

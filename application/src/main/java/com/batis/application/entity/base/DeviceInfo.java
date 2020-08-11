@@ -2,6 +2,7 @@ package com.batis.application.entity.base;
 
 import com.batis.application.entity.BaseEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
@@ -11,8 +12,10 @@ public class DeviceInfo extends BaseEntity {
 
     private String deviceName;
 
+    @Column(unique = true)
     private String fingerPrint;
 
+    @Column(unique = true)
     private String mac;
 
     public String getDeviceCode() {
