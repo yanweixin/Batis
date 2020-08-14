@@ -1,7 +1,10 @@
 dependencies {
-	implementation project(":application")
+    implementation project(":application:boot")
+    implementation project(":application:web")
+    implementation project(":application:database")
+    implementation project(":application:service")
+    implementation project(":application:utils")
 	implementation project(":library")
-	implementation project(":util")
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}

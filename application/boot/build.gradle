@@ -1,0 +1,19 @@
+dependencies {
+    api project(":library")
+    implementation project(":application:web")
+    implementation project(":application:database")
+    implementation project(":application:service")
+    implementation project(":application:utils")
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.apache.logging.log4j:log4j-mongodb3:2.13.3'
+    runtimeOnly 'org.mongodb:mongo-java-driver:3.12.6'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+bootJar {
+    enabled = true
+}

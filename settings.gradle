@@ -1,6 +1,9 @@
-rootProject.name = 'batis'
+rootProject.name = 'Batis'
 
-include 'application'
+include 'application:boot'
+include 'application:web'
+include 'application:service'
+include 'application:database'
+include 'application:utils'
 include 'library'
-include 'util'
 include 'benchmark'
