@@ -1,4 +1,4 @@
-package com.batis.application.service;
+package com.batis.application.web;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;

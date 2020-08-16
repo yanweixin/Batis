@@ -49,7 +49,7 @@ public class AsyncExecute {
     }
 
     /**
-     * Usage has been deprecated, use {@code map} instead.
+     * Usage has been deprecated, use {@link #mapFunction} instead.
      *
      * @param stringFunctionMap
      * @param t
@@ -68,9 +68,23 @@ public class AsyncExecute {
         return dataMap;
     }
 
-    public <T, R> Map<String, R> map(Map<String, Function<T, R>> stringFunctionMap, T t) {
+    /**
+     * Get a map of string and one-parameter function , return a map of string and result of the function.
+     * @param functionMap
+     * @param t
+     * @param <T>
+     * @param <R>
+     * @return
+     */
+    public <T, R> Map<String, R> mapFunction(Map<String, Function<T, R>> functionMap, T t) {
         final Map<String, R> dataMap = new HashMap<>();
-        stringFunctionMap.entrySet().parallelStream().forEach(entry -> dataMap.put(entry.getKey(), entry.getValue().apply(t)));
+        functionMap.entrySet().parallelStream().forEach(entry -> dataMap.put(entry.getKey(), entry.getValue().apply(t)));
+        return dataMap;
+    }
+
+    public <T, U, R> Map<String, R> mapBiFunction(Map<String, BiFunction<T, U, R>> biFunctionMap, T t, U u) {
+        final Map<String, R> dataMap = new HashMap<>();
+        biFunctionMap.entrySet().parallelStream().forEach(entry -> dataMap.put(entry.getKey(), entry.getValue().apply(t, u)));
         return dataMap;
     }
 

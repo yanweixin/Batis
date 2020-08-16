@@ -14,10 +14,7 @@ import java.util.Date;
 public abstract class Person extends BaseEntity {
 
     @NotNull
-    private String firstName;
-
-    @NotNull
-    private String lastName;
+    private String displayName;
 
     @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -40,20 +37,12 @@ public abstract class Person extends BaseEntity {
     @NotNull
     private Boolean enabled;
 
-    public String getFirstName() {
-        return firstName;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setDisplayName(String splayName) {
+        this.displayName = splayName;
     }
 
     public String getPassword() {

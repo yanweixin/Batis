@@ -28,9 +28,9 @@ public class UserController {
         return userRepository.findById(id);
     }
 
-    @GetMapping("/{userCode}")
-    public Optional<User> getUserByCode(@PathVariable String userCode) {
-        return userRepository.findByUserCode(userCode);
+    @GetMapping("/{userName}")
+    public Optional<User> getUserByUserName(@PathVariable String userName) {
+        return userRepository.findByUserName(userName);
     }
 
     @PostMapping("/")

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.stream.Collectors;
 
 import com.batis.library.exception.StorageFileNotFoundException;
-import com.batis.application.service.StorageService;
+import com.batis.application.web.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;

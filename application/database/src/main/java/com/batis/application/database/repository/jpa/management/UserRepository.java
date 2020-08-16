@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface UserRepository extends CustomQuery<User, Long> {
 
-    Optional<User> findByUserCode(String userCode);
+    Optional<User> findByUserName(String userName);
 
-    List<User> findByFirstNameAndLastName(String firstName, String lastName);
+    List<User> findByDisplayName(String displayName);
 }

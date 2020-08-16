@@ -16,7 +16,15 @@ allprojects {
     group = 'com.batis'
     version = '0.0.1-SNAPSHOT'
     sourceCompatibility = '11'
+
+    plugins.withType(JavaPlugin) {
+        dependencies {
+            implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+        }
+    }
+//    pluginManager.withPlugin('org.springframework.boot') {}
 }
+
 subprojects {
 
     apply plugin: 'org.springframework.boot'
@@ -28,6 +36,18 @@ subprojects {
         mavenCentral()
     }
 
+    if (project.getParent().name == 'application' || project.name == 'benchmark') {
+        dependencies {
+            testImplementation('org.springframework.boot:spring-boot-starter-test') {
+                exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+            }
+        }
+    } else {
+        dependencies {
+            testImplementation "org.junit.jupiter:junit-jupiter:${junitVersion}"
+        }
+    }
+
     test {
         useJUnitPlatform()
         testLogging.showStandardStreams(true)
@@ -37,6 +57,19 @@ subprojects {
     configurations {
         all {
             exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        }
+    }
+
+    task hello {
+        doLast {
+            task ->
+                println('-'.repeat(80) + '\n' + project.getParent().name + ':' + project.name)
+                project.configurations.implementation.allDependencies.each {
+                    item -> println(item.group + ':' + item.name + ':' + item.version)
+                }
+                project.configurations.implementation.getAllDependencies().withType(ProjectDependency).forEach {
+                    item -> println(item.getDependencyProject().name)
+                }
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.batis.application.database.entity.management;
 
+import org.hibernate.annotations.NaturalId;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -7,9 +9,7 @@ import javax.validation.constraints.NotNull;
 public class User extends Person {
     @NotNull
     @Column(unique = true)
-    private String userCode;
-
-    @NotNull
+    @NaturalId
     private String userName;
 
     @Override
@@ -17,14 +17,6 @@ public class User extends Person {
 //    @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() {
         return super.getId();
-    }
-
-    public String getUserCode() {
-        return userCode;
-    }
-
-    public void setUserCode(String userCode) {
-        this.userCode = userCode;
     }
 
     public String getUserName() {

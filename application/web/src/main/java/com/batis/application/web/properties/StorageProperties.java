@@ -1,4 +1,4 @@
-package com.batis.application.service.properties;
+package com.batis.application.web.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

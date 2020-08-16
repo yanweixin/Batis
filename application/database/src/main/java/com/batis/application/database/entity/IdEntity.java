@@ -11,7 +11,7 @@ public abstract class IdEntity {
 
     @Id
     @GeneratedValue(generator = "idGenerator")
-    @GenericGenerator(name = "idGenerator",strategy = "com.batis.library.generator.IdGenerator")
+    @GenericGenerator(name = "idGenerator",strategy = "com.batis.application.database.common.IdGenerator")
     private Long id;
 
     public Long getId() {

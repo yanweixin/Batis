@@ -1,5 +1,6 @@
-package com.batis.library.generator;
+package com.batis.application.database.common;
 
+import com.batis.library.generator.SnowFlakeGenerator;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
