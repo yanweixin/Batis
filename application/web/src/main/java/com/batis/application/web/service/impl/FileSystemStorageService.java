@@ -1,4 +1,4 @@
-package com.batis.application.web.impl;
+package com.batis.application.web.service.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
 
-import com.batis.application.web.StorageService;
+import com.batis.application.web.service.StorageService;
 import com.batis.application.web.properties.StorageProperties;
 import com.batis.library.exception.StorageException;
 import com.batis.library.exception.StorageFileNotFoundException;

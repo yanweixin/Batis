@@ -3,14 +3,22 @@ package com.batis.application.utils.concurrent;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+/**
+ * Note:
+ * 1. {@link Map#forEach(BiConsumer)} is being processed sequentially
+ * 2. {@link HashMap} is not thread safe, do not use {@link Collection#parallelStream()} to add element to it. You can
+ * use {@link java.util.concurrent.ConcurrentHashMap} or use {@link Collectors#toMap(Function, Function)} to add element in
+ * parallel.
+ */
 
 @Component
 public class AsyncExecute {
@@ -70,6 +78,7 @@ public class AsyncExecute {
 
     /**
      * Get a map of string and one-parameter function , return a map of string and result of the function.
+     *
      * @param functionMap
      * @param t
      * @param <T>
@@ -77,15 +86,19 @@ public class AsyncExecute {
      * @return
      */
     public <T, R> Map<String, R> mapFunction(Map<String, Function<T, R>> functionMap, T t) {
-        final Map<String, R> dataMap = new HashMap<>();
-        functionMap.entrySet().parallelStream().forEach(entry -> dataMap.put(entry.getKey(), entry.getValue().apply(t)));
-        return dataMap;
+//        final Map<String, R> dataMap = new ConcurrentHashMap<>();
+//        functionMap.entrySet().parallelStream().forEach(entry -> dataMap.put(entry.getKey(), entry.getValue().apply(t)));
+//        return dataMap;
+        return functionMap.entrySet().parallelStream()
+                .collect(Collectors.toMap(Map.Entry::getKey, it -> it.getValue().apply(t)));
     }
 
     public <T, U, R> Map<String, R> mapBiFunction(Map<String, BiFunction<T, U, R>> biFunctionMap, T t, U u) {
-        final Map<String, R> dataMap = new HashMap<>();
-        biFunctionMap.entrySet().parallelStream().forEach(entry -> dataMap.put(entry.getKey(), entry.getValue().apply(t, u)));
-        return dataMap;
+//        final Map<String, R> dataMap = new ConcurrentHashMap<>();
+//        biFunctionMap.entrySet().parallelStream().forEach(entry -> dataMap.put(entry.getKey(), entry.getValue().apply(t, u)));
+//        return dataMap;
+        return biFunctionMap.entrySet().parallelStream()
+                .collect(Collectors.toMap(Map.Entry::getKey, it -> it.getValue().apply(t, u)));
     }
 
     public <T> void join(List<CompletableFuture<T>> futures) {
