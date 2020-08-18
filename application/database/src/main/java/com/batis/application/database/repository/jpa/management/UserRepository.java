@@ -11,4 +11,6 @@ public interface UserRepository extends CustomQuery<User, Long> {
     Optional<User> findByUserName(String userName);
 
     List<User> findByDisplayName(String displayName);
+
+    boolean existsByUserName(String userName);
 }

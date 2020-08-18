@@ -7,7 +7,7 @@ CREATE USER IF NOT EXISTS 'apps'@'%' IDENTIFIED WITH caching_sha2_password BY 'a
 GRANT ALL PRIVILEGES ON app.* TO 'apps'@'%';
 
 SELECT *
-FROM user;
+FROM `user`;
 SELECT *
 FROM device_info;
 SELECT *

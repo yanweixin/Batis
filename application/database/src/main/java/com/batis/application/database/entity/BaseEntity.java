@@ -15,16 +15,18 @@ import java.util.Date;
 import java.util.Objects;
 
 @MappedSuperclass
-@JsonIgnoreProperties({"createdBy","createdAt","updatedBy","updatedAt","objectVersionNumber"})
+@JsonIgnoreProperties({"createdBy", "createdAt", "updatedBy", "updatedAt", "objectVersionNumber"})
 public abstract class BaseEntity extends IdEntity implements Serializable {
     @NotNull
     @CreatedBy
+    @Column(updatable = false)
     private Long createdBy;
 
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     @CreatedDate
+    @Column(updatable = false)
     private Date createdAt;
 
     @NotNull
@@ -41,7 +43,7 @@ public abstract class BaseEntity extends IdEntity implements Serializable {
     @NotNull
     private Long objectVersionNumber;
 
-    private Date getNow(){
+    private Date getNow() {
 //        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 //        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         return new Date();
