@@ -74,6 +74,19 @@ subprojects {
     }
 }
 
+dependencies {
+    implementation project(":application:boot")
+    implementation project(":application:web")
+    implementation project(":application:database")
+    implementation project(":application:service")
+    implementation project(":application:utils")
+    implementation project(":library")
+}
+
 bootJar {
-    enabled = false
+    enabled = true
+}
+
+springBoot{
+    mainClassName = 'com.batis.application.AppApplication'
 }

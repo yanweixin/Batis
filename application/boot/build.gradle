@@ -1,5 +1,4 @@
 dependencies {
-    api project(":library")
     implementation project(":application:web")
     implementation project(":application:database")
     implementation project(":application:service")
@@ -11,5 +10,9 @@ dependencies {
 }
 
 bootJar {
+    enabled = false
+}
+
+jar {
     enabled = true
 }

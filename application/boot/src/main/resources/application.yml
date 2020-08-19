@@ -21,9 +21,9 @@ spring:
       ddl-auto: update
   jackson:
     default-property-inclusion: non_null
-  #  data:
-  #    mongodb:
-  #      uri: mongodb://dev-server:27017
+    data:
+      mongodb:
+        uri: mongodb://dev-server:27017
   servlet:
     multipart:
       max-request-size: 1GB
@@ -36,6 +36,3 @@ spring:
 server:
   servlet:
     context-path: /api
-
-
-

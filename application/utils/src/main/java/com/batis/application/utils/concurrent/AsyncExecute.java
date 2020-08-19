@@ -85,20 +85,20 @@ public class AsyncExecute {
      * @param <R>
      * @return
      */
-    public <T, R> Map<String, R> mapFunction(Map<String, Function<T, R>> functionMap, T t) {
+    public <T, R> Map<String, Optional<R>> mapFunction(Map<String, Function<T, R>> functionMap, T t) {
 //        final Map<String, R> dataMap = new ConcurrentHashMap<>();
 //        functionMap.entrySet().parallelStream().forEach(entry -> dataMap.put(entry.getKey(), entry.getValue().apply(t)));
 //        return dataMap;
         return functionMap.entrySet().parallelStream()
-                .collect(Collectors.toMap(Map.Entry::getKey, it -> it.getValue().apply(t)));
+                .collect(Collectors.toMap(Map.Entry::getKey, it -> Optional.ofNullable(it.getValue().apply(t))));
     }
 
-    public <T, U, R> Map<String, R> mapBiFunction(Map<String, BiFunction<T, U, R>> biFunctionMap, T t, U u) {
+    public <T, U, R> Map<String, Optional<R>> mapBiFunction(Map<String, BiFunction<T, U, R>> biFunctionMap, T t, U u) {
 //        final Map<String, R> dataMap = new ConcurrentHashMap<>();
 //        biFunctionMap.entrySet().parallelStream().forEach(entry -> dataMap.put(entry.getKey(), entry.getValue().apply(t, u)));
 //        return dataMap;
         return biFunctionMap.entrySet().parallelStream()
-                .collect(Collectors.toMap(Map.Entry::getKey, it -> it.getValue().apply(t, u)));
+                .collect(Collectors.toMap(Map.Entry::getKey, it -> Optional.ofNullable(it.getValue().apply(t, u))));
     }
 
     public <T> void join(List<CompletableFuture<T>> futures) {

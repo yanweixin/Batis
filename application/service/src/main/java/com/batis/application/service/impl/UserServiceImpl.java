@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @CachePut(key = "#p0")
+    @Caching(put = {@CachePut(key = "#p0"), @CachePut(key = "#result.userName")})
     public User updateById(Long userId, User user) {
         user.setId(userId);
         return save(user);
@@ -48,13 +48,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @CachePut(key = "#result.id")
+    @Cacheable
     public User findByUserName(String userName) {
         return userRepository.findByUserName(userName).orElse(null);
     }
 
     @Override
-    @Caching(put = {@CachePut(key = "#p0"), @CachePut(key = "#result.id")})
     public User updateByUserName(String userName, User user) {
         user.setId(findByUserName(userName).getId());
         return userRepository.save(user);
@@ -69,6 +68,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Caching(put = {@CachePut(key = "#result.id"), @CachePut(key = "#result.userName")})
     public User save(User user) {
         return userRepository.save(user);
     }
