@@ -1,7 +1,7 @@
 package com.batis.application.database.entity.system;
 
-import com.batis.application.database.entity.BaseEntity;
-import com.batis.application.database.entity.base.DeviceInfo;
+import com.batis.application.database.entity.base.BaseEntity;
+import com.batis.application.database.entity.physics.DeviceInfo;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;

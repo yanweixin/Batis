@@ -1,11 +1,8 @@
 dependencies {
     implementation project(":application:web")
-    implementation project(":application:database")
-    implementation project(":application:service")
     implementation project(":application:utils")
     implementation 'org.springframework.boot:spring-boot-starter'
-    implementation "org.apache.logging.log4j:log4j-mongodb3:${log4jVersion}"
-    runtimeOnly 'org.mongodb:mongo-java-driver:3.12.6'
+//    implementation "org.apache.logging.log4j:log4j-mongodb3:${log4jVersion}"
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
 

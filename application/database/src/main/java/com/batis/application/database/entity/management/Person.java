@@ -1,6 +1,6 @@
 package com.batis.application.database.entity.management;
 
-import com.batis.application.database.entity.BaseEntity;
+import com.batis.application.database.entity.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

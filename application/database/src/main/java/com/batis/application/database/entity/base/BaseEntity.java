@@ -1,4 +1,4 @@
-package com.batis.application.database.entity;
+package com.batis.application.database.entity.base;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -45,7 +45,6 @@ public abstract class BaseEntity extends IdEntity implements Serializable {
 
     private Date getNow() {
 //        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
-//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         return new Date();
     }
 

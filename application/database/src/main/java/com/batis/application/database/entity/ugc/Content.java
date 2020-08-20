@@ -1,6 +1,6 @@
 package com.batis.application.database.entity.ugc;
 
-import com.batis.application.database.entity.BaseEntity;
+import com.batis.application.database.entity.base.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

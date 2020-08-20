@@ -18,12 +18,9 @@ spring:
         #        format_sql: true
         globally_quoted_identifiers: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
   jackson:
     default-property-inclusion: non_null
-    data:
-      mongodb:
-        uri: mongodb://dev-server:27017
   servlet:
     multipart:
       max-request-size: 1GB
@@ -33,6 +30,13 @@ spring:
   cache:
     redis:
       time-to-live: 600000 #10 minutes
+  data:
+    mongodb:
+      host: dev-server
+      database: app
+      username: apps
+      password: apps
 server:
   servlet:
     context-path: /api
+  port: 3000

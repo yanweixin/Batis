@@ -61,11 +61,11 @@
             <Column name="thread_name" pattern="%threadName"/>
             <Column name="thread_priority" pattern="%threadPriority"/>
         </JDBC>
-        <NoSql name="MongoAppender">
-            <ThresholdFilter level="TRACE"/>
-            <MongoDb3 databaseName="logdb" collectionName="applicationLog" server="dev-server"
-                      username="logs" password="logs"/>
-        </NoSql>
+<!--        <NoSql name="MongoAppender">-->
+<!--            <ThresholdFilter level="TRACE"/>-->
+<!--            <MongoDb3 databaseName="logdb" collectionName="applicationLog" server="dev-server"-->
+<!--                      username="logs" password="logs"/>-->
+<!--        </NoSql>-->
         <Async name="Async">
             <AppenderRef ref="RollingRandomAccessFile"/>
             <AppenderRef ref="Console"/>
@@ -81,11 +81,12 @@
         <!--        <Logger name="org.hibernate.validator.internal.util.Version" level="warn"/>-->
         <!--        <Logger name="org.springframework.boot.actuate.endpoint.jmx" level="warn"/>-->
 
-        <logger name="org.springframework.data.elasticsearch.client.WIRE" level="trace"/>
+        <Logger name="org.springframework.data.elasticsearch.client.WIRE" level="trace"/>
+        <Logger name="org.springframework.data.mongodb" level="debug"/>
+
         <!-- Log everything in hibernate -->
         <Logger name="org.hibernate" level="INFO" additivity="false">
             <AppenderRef ref="Async"/>
-            <AppenderRef ref="MongoAppender"/>
             <AppenderRef ref="jdbcAppender"/>
         </Logger>
         <!-- Log SQL statements -->
@@ -95,13 +96,12 @@
         <!-- Log custom packages -->
         <Logger name="com.batis" level="debug" additivity="false">
             <AppenderRef ref="Async"/>
-            <AppenderRef ref="MongoAppender"/>
             <AppenderRef ref="jdbcAppender"/>
         </Logger>
 
         <Root level="INFO">
             <AppenderRef ref="Async"/>
-            <AppenderRef ref="MongoAppender"/>
+<!--            <AppenderRef ref="MongoAppender"/>-->
         </Root>
     </Loggers>
 </Configuration>

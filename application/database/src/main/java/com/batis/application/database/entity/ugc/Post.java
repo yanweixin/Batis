@@ -1,7 +1,7 @@
 package com.batis.application.database.entity.ugc;
 
-import com.batis.application.database.entity.BaseEntity;
-import com.batis.application.database.entity.base.DeviceInfo;
+import com.batis.application.database.entity.base.BaseEntity;
+import com.batis.application.database.entity.physics.DeviceInfo;
 import com.batis.application.database.entity.management.User;
 import com.fasterxml.jackson.annotation.*;
 import org.springframework.data.elasticsearch.annotations.Document;

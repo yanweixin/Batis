@@ -1,10 +1,11 @@
 package com.batis.application.database.entity.audit;
 
-import com.batis.application.database.entity.BaseEntity;
+import com.batis.application.database.entity.base.NoSqlEntity;
 
-public abstract class BaseAudit extends BaseEntity {
+public abstract class BaseAudit extends NoSqlEntity {
     private String operation;
 
+    //id of the table being audited
     private Long lineId;
 
     public String getOperation() {

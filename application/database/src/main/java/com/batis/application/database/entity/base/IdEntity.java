@@ -1,4 +1,4 @@
-package com.batis.application.database.entity;
+package com.batis.application.database.entity.base;
 
 import org.hibernate.annotations.GenericGenerator;
 
