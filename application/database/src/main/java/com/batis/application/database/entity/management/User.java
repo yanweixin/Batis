@@ -1,11 +1,13 @@
 package com.batis.application.database.entity.management;
 
 import org.hibernate.annotations.NaturalId;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Document(collection = "user")
 public class User extends Person {
     @NotNull
     @Column(unique = true)

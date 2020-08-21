@@ -10,6 +10,7 @@ import javax.persistence.MappedSuperclass;
 public abstract class IdEntity {
 
     @Id
+//    @MongoId
     @GeneratedValue(generator = "idGenerator")
     @GenericGenerator(name = "idGenerator",strategy = "com.batis.application.database.common.IdGenerator")
     private Long id;

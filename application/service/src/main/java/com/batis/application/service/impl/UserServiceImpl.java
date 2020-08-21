@@ -2,12 +2,14 @@ package com.batis.application.service.impl;
 
 import com.batis.application.database.entity.management.User;
 import com.batis.application.database.repository.jpa.management.UserRepository;
+import com.batis.application.database.repository.mongo.MongoUserRepository;
 import com.batis.application.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -17,6 +19,8 @@ import java.util.Objects;
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    MongoUserRepository mongoUserRepository;
 
     @Override
     public Page<User> findAll(Pageable pageable) {
@@ -60,21 +64,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     @CacheEvict
     public int deleteByUserName(String userName) {
         User user = Objects.requireNonNull(findByUserName(userName));
+        mongoUserRepository.delete(user);
         userRepository.delete(user);
         return 1;
     }
 
     @Override
+    @Transactional
     @Caching(put = {@CachePut(key = "#result.id"), @CachePut(key = "#result.userName")})
     public User save(User user) {
-        return userRepository.save(user);
+        userRepository.save(user);
+        mongoUserRepository.save(user);
+        return user;
     }
 
     @Override
+    @Transactional
+    @CacheEvict(allEntries = true)
     public List<User> saveAll(List<User> users) {
-        return userRepository.saveAll(users);
+        userRepository.saveAll(users);
+        mongoUserRepository.saveAll(users);
+        return users;
     }
 }
