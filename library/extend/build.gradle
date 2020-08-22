@@ -1,0 +1,7 @@
+dependencies {
+    implementation "org.aspectj:aspectjrt:${aspectjVersion}"
+    implementation "org.aspectj:aspectjweaver:${aspectjVersion}"
+}
+jar {
+    enabled = true
+}

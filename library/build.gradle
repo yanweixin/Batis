@@ -1,5 +1,10 @@
-bootJar {
-	enabled = false
+allprojects {
+	sourceCompatibility = 11
+}
+
+dependencies {
+	api project(":library:lang")
+	api project(":library:extend")
 }
 
 jar {

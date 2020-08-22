@@ -3,7 +3,6 @@ dependencies {
     implementation project(":application:utils")
     implementation 'org.springframework.boot:spring-boot-starter'
 //    implementation "org.apache.logging.log4j:log4j-mongodb3:${log4jVersion}"
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
 
 bootJar {
@@ -12,4 +11,8 @@ bootJar {
 
 jar {
     enabled = true
+}
+
+processResources {
+    from("$rootDir/config")
 }

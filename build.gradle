@@ -19,19 +19,24 @@ allprojects {
 
     plugins.withType(JavaPlugin) {
         dependencies {
+            implementation "org.apache.logging.log4j:log4j-core:$log4jVersion"
+            implementation "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
+        }
+    }
+    pluginManager.withPlugin('org.springframework.boot') {
+        dependencies {
             implementation 'org.springframework.boot:spring-boot-starter-log4j2'
         }
     }
-//    pluginManager.withPlugin('org.springframework.boot') {}
 }
 
 configure(subprojects - project(':application')) {
-    apply plugin: 'org.springframework.boot'
-    apply plugin: 'io.spring.dependency-management'
     apply plugin: 'java-library'
     apply plugin: 'java'
 
     if (project.getParent().name == 'application' || project.name == 'benchmark') {
+        apply plugin: 'org.springframework.boot'
+        apply plugin: 'io.spring.dependency-management'
         dependencies {
             testImplementation('org.springframework.boot:spring-boot-starter-test') {
                 exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
@@ -75,11 +80,7 @@ subprojects {
 
 dependencies {
     implementation project(":application:boot")
-    implementation project(":application:web")
-    implementation project(":application:database")
-    implementation project(":application:service")
-    implementation project(":application:utils")
-    implementation project(":library")
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
 
 bootJar {

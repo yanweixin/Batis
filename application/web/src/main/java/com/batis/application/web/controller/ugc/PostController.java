@@ -20,10 +20,10 @@ public class PostController {
         return postService.findAll(pageable);
     }
 
-//    @GetMapping("/query")
-//    public List<Post> queryPagedPost(String keywords) {
-//        return postService.findAllByKeywords(keywords);
-//    }
+    @GetMapping("/query")
+    public List<Post> queryPagedPost(String keywords) {
+        return postService.findAllByKeywords(keywords);
+    }
 
     @PostMapping("/")
     public List<Post> addPost(@RequestBody List<Post> posts) {

@@ -56,4 +56,9 @@ public class PostServiceImpl implements PostService {
     public int deleteById(Long id) {
         return 0;
     }
+
+    @Override
+    public List<Post> findAllByKeywords(String keywords) {
+        return esPostRepository.findAllByKeywords(keywords);
+    }
 }

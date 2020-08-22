@@ -6,7 +6,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
     host: dev-server
-    password: PassW0rds
+    password: Passw0rd
   elasticsearch:
     rest:
       uris: http://dev-server:9200
@@ -36,6 +36,15 @@ spring:
       database: app
       username: apps
       password: apps
+  devtools:
+    restart:
+      additional-paths:
+        - ./application/boot/build/classes/java/main
+        - ./application/database/build/classes/java/main
+        - ./application/service/build/classes/java/main
+        - ./application/utils/build/classes/java/main
+        - ./library/extend/build/classes/java/main
+        - ./library/lang/build/classes/java/main
 server:
   servlet:
     context-path: /api
