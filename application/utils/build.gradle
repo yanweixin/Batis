@@ -1,7 +1,6 @@
 dependencies {
     api project(":library")
     implementation 'org.springframework.boot:spring-boot-starter'
-    implementation 'org.springframework.boot:spring-boot-starter-aop'
 }
 
 bootJar {

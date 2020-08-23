@@ -1,6 +1,8 @@
 package com.batis.application.database.repository.jpa;
 
+import com.batis.application.utils.ExtendedReflectUtils;
 import com.batis.library.reflect.ReflectUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,6 +13,7 @@ import javax.persistence.Id;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @NoRepositoryBean
@@ -22,7 +25,7 @@ public interface CustomQuery<T, ID> extends JpaRepository<T, ID> {
             return null;
         }
 
-        List<String> ignorePaths = new ArrayList();
+        List<String> ignorePaths = new ArrayList<>();
         for (Field field : ReflectUtils.getAllFields(entity)) {
             Id id = field.getAnnotation(Id.class);
             Column column = field.getAnnotation(Column.class);
@@ -43,5 +46,13 @@ public interface CustomQuery<T, ID> extends JpaRepository<T, ID> {
             entity = optionalS.get();
         }
         return entity;
+    }
+
+    @SuppressWarnings("unchecked")
+    default <S extends T> S updateById(ID id, S source) {
+        T target = findById(id).orElse(null);
+        Objects.requireNonNull(target);
+        BeanUtils.copyProperties(source, target, ExtendedReflectUtils.getNullPropertyNames(source));
+        return (S) save(target);
     }
 }
