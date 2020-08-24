@@ -1,4 +1,4 @@
-package com.batis.application.aspect.ponit;
+package com.batis.application.aspect.point;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;

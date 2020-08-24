@@ -28,21 +28,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Caching(cacheable = {@Cacheable(key = "#result?.id", condition = "#result!=null"),
-            @Cacheable(key = "#result?.userName", condition = "#result!=null")})
+//    @Caching(cacheable = {@Cacheable(key = "#result?.id", condition = "#result!=null"),
+//            @Cacheable(key = "#result?.userName", condition = "#result!=null")})
     public User findById(Long userId) {
         return userRepository.findById(userId).orElse(null);
     }
 
     @Override
-    @Caching(put = {@CachePut(key = "#p0"), @CachePut(key = "#result.userName")})
+//    @Caching(put = {@CachePut(key = "#p0"), @CachePut(key = "#result.userName")})
     public User updateById(Long userId, User user) {
         user.setId(userId);
         return userRepository.updateById(userId, user);
     }
 
     @Override
-    @CacheEvict
     public int deleteById(Long userId) {
         if (userRepository.existsById(userId)) {
             userRepository.deleteById(userId);
@@ -53,8 +52,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Caching(cacheable = {@Cacheable(key = "#result?.id", condition = "#result!=null"),
-            @Cacheable(key = "#result?.userName", condition = "#result!=null")})
+//    @Caching(cacheable = {@Cacheable(key = "#result?.id", condition = "#result!=null"),
+//            @Cacheable(key = "#result?.userName", condition = "#result!=null")})
     public User findByUserName(String userName) {
         return userRepository.findByUserName(userName).orElse(null);
     }
@@ -67,7 +66,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    @CacheEvict
     public int deleteByUserName(String userName) {
         User user = Objects.requireNonNull(findByUserName(userName));
         mongoUserRepository.delete(user);
@@ -77,7 +75,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    @Caching(put = {@CachePut(key = "#result.id"), @CachePut(key = "#result.userName")})
+//    @Caching(put = {@CachePut(key = "#result.id"), @CachePut(key = "#result.userName")})
     public User save(User user) {
         userRepository.save(user);
         mongoUserRepository.save(user);
@@ -86,7 +84,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    @CacheEvict(allEntries = true)
     public List<User> saveAll(List<User> users) {
         userRepository.saveAll(users);
         mongoUserRepository.saveAll(users);
