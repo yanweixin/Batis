@@ -20,9 +20,10 @@ public class RedisConfig {
 //    }
 
     /**
-     * customize a redisTemplate . the defect of GenericJackson2JsonRedisSerializer is when value is within Integer scope,
+     * Customize a redisTemplate . the defect of GenericJackson2JsonRedisSerializer is when value is within Integer scope,
      * it will convert value to Integer instead of Long. To manually convert Integer to Long ,please use {@code
      * new GenericJackson2JsonRedisSerializer(new ObjectMapper().enable(DeserializationFeature.USE_LONG_FOR_INTS))}
+     *
      * @param connectionFactory
      * @param <K>
      * @param <V>

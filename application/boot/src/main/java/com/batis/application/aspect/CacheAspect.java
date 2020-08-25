@@ -12,23 +12,31 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.io.Serializable;
+import java.util.*;
 
 
 @Component
 @Aspect
 public class CacheAspect {
     private final static Logger LOGGER = LoggerFactory.getLogger(CacheAspect.class);
-    private final static ObjectMapper mapper = new ObjectMapper();
-    private final static GenericJackson2JsonRedisSerializer intToLongDeserializer =
-            new GenericJackson2JsonRedisSerializer(new ObjectMapper().enable(DeserializationFeature.USE_LONG_FOR_INTS));
-
     @Autowired
     RedisTemplate<Object, Object> redisTemplate;
+    private final static ObjectMapper mapper = new ObjectMapper();
+
+    private int sequence = 0; // A sign to set RedisSerializer with different configuration;
+    private final static Map<Integer, RedisSerializer<Object>> serializerMap;
+
+    static {
+        serializerMap = new HashMap<>();
+        serializerMap.put(0, new GenericJackson2JsonRedisSerializer());
+        serializerMap.put(1, new GenericJackson2JsonRedisSerializer(new ObjectMapper().enable(DeserializationFeature.USE_LONG_FOR_INTS)));
+        serializerMap.put(2, new JdkSerializationRedisSerializer());
+    }
 
 //    @AfterReturning(pointcut = "com.batis.application.aspect.point.CommonJointPoint.onCache()&&@annotation(caching)",
 //            returning = "retVal")
@@ -73,10 +81,10 @@ public class CacheAspect {
     public Object onJpaRepositoryAction(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         Object[] args = proceedingJoinPoint.getArgs();
         MethodSignature methodSignature = (MethodSignature) proceedingJoinPoint.getSignature();
-//        LOGGER.info("\n" + "Declaring Type: " + methodSignature.getDeclaringTypeName() + "\n" +
-//                "Return Type: " + methodSignature.getReturnType().getName() + "\n" +
-//                "Name: " + methodSignature.getName() + "\n" +
-//                "ParamterNames: " + Arrays.toString(methodSignature.getParameterNames()) + "\n");
+        LOGGER.info("\n" + "Declaring Type: " + methodSignature.getDeclaringTypeName() + "\n" +
+                "Return Type: " + methodSignature.getReturnType().getName() + "\n" +
+                "Name: " + methodSignature.getName() + "\n" +
+                "ParamterNames: " + Arrays.toString(methodSignature.getParameterNames()) + "\n");
         String methodName = methodSignature.getName();
         String declareTypeName = methodSignature.getDeclaringType().getSimpleName();
 
@@ -85,8 +93,14 @@ public class CacheAspect {
         String key = keyPrefix + ":" + keyName;
         Object result;
         if (StringUtils.startWith(methodName, Arrays.asList("find", "get", "count"))) {
-            if (methodSignature.getReturnType() == Long.class) {
-                redisTemplate.setValueSerializer(intToLongDeserializer);
+            // Check the return type to use different serialization strategy
+            Class<?> returnType = methodSignature.getReturnType();
+            if (returnType == Long.class) {
+                this.setSerializer(1);
+            } else if (Serializable.class.isAssignableFrom(returnType)) {
+                this.setSerializer(0);
+            } else {
+                this.setSerializer(2);
             }
             // Method 1: used in inServicePackage()
             result = redisTemplate.opsForValue().get(key);
@@ -105,7 +119,17 @@ public class CacheAspect {
         return result;
     }
 
-    public void deleteKeyByPatterns(List<String> patterns) {
+    private void deleteKeyByPatterns(List<String> patterns) {
         patterns.forEach(pattern -> Objects.requireNonNull(redisTemplate.keys(pattern)).forEach(key -> redisTemplate.delete(key)));
+    }
+
+    private synchronized void setSerializer(int sequence) {
+        if (this.sequence != sequence) {
+            this.sequence = sequence;
+            {
+                LOGGER.warn("Set valueSerializer to :" + sequence);
+                redisTemplate.setValueSerializer(serializerMap.get(sequence));
+            }
+        }
     }
 }
