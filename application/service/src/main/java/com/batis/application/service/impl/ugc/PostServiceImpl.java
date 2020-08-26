@@ -54,6 +54,11 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public int deleteById(Long id) {
+        if (postRepository.existsById(id)) {
+            esPostRepository.deleteById(id);
+            postRepository.deleteById(id);
+            return 1;
+        }
         return 0;
     }
 

@@ -25,8 +25,13 @@ public class PostController {
         return postService.findAllByKeywords(keywords);
     }
 
+    @DeleteMapping("/{id}")
+    public int deletePostById(@PathVariable("id") Long id) {
+        return postService.deleteById(id);
+    }
+
     @PostMapping("/")
     public List<Post> addPost(@RequestBody List<Post> posts) {
-       return postService.saveAll(posts);
+        return postService.saveAll(posts);
     }
 }

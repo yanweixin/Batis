@@ -1,4 +1,4 @@
-package com.batis.application.web.service.impl;
+package com.batis.application.service.impl.file;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,8 +9,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
 
-import com.batis.application.web.service.StorageService;
-import com.batis.application.web.properties.StorageProperties;
+import com.batis.application.service.StorageService;
+import com.batis.application.utils.properties.StorageProperties;
 import com.batis.library.exception.StorageException;
 import com.batis.library.exception.StorageFileNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

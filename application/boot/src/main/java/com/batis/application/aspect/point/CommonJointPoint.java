@@ -6,27 +6,23 @@ import org.aspectj.lang.annotation.Pointcut;
 @Aspect
 public class CommonJointPoint {
 
-    @Pointcut("within(com.batis.application.service..*)")
-    public void inServicePackage() {
+    @Pointcut("Target.atRestController() && Within.application()")
+    public void onWebRequest() {
     }
 
-    @Pointcut("inServicePackage() && bean(*Repository)")
+    @Pointcut("Within.service() && Bean.repository()")
     public void onRepositoryBean() {
     }
 
-    @Pointcut("execution(public !void org.springframework.data.repository.Repository+.*(..))")
-    public void onRepositoryMethod() {
-    }
-
-    @Pointcut("execution(public !void com.batis.application.database.repository.jpa..*(..))")
-    public void onJpaRepositoryMethod() {
-    }
-
-    @Pointcut("inServicePackage() && @target(org.springframework.cache.annotation.CacheConfig)")
+    @Pointcut("Within.service() && Target.atCacheConfig()")
     public void onCache() {
     }
 
-    @Pointcut("inServicePackage() && @annotation(org.springframework.cache.annotation.Caching)")
+    @Pointcut("Within.service() && Annotation.caching()")
     public void onCaching() {
+    }
+
+    @Pointcut("Within.service() && Within.notFileService()")
+    public void onServiceCache() {
     }
 }

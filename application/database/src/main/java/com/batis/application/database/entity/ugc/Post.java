@@ -10,7 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Document(indexName = "test-post")
+@Document(indexName = "ugc-post")
 public class Post extends BaseEntity {
 
     @NotNull
@@ -19,7 +19,7 @@ public class Post extends BaseEntity {
     private User author;
 
     @NotNull
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private DeviceInfo deviceInfo;
 
