@@ -68,7 +68,6 @@ public class User extends Person implements UserDetails {
     }
 
     @Override
-    @JsonIgnore
     public boolean isEnabled() {
         return super.getEnabled();
     }

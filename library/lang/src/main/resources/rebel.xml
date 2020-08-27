@@ -9,7 +9,7 @@
 	<id>Batis.library.lang</id>
 
 	<classpath>
-		<dir name="${rebel.projectpath.batis.library.lang.main}/build\classes\java\main">
+		<dir name="${rebel.projectpath.batis.library.lang.main}/build/classes/java/main">
 		</dir>
 	</classpath>
 

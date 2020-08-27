@@ -9,7 +9,7 @@
 	<id>Batis.application.utils</id>
 
 	<classpath>
-		<dir name="${rebel.projectpath.batis.application.utils.main}/build\classes\java\main">
+		<dir name="${rebel.projectpath.batis.application.utils.main}/build/classes/java/main">
 		</dir>
 	</classpath>
 

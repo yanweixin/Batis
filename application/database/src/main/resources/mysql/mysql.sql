@@ -26,9 +26,14 @@ FROM log.application_log
 # WHERE logger LIKE '%CustomQuery'
 ORDER BY timestamp DESC;
 
+DELETE
+FROM user
+WHERE id != 1;
+
 INSERT INTO app.user (id, created_at, created_by, object_version_number, updated_at, updated_by, address, birthday,
                       description, display_name, email, enabled, gender, password, phone_number, user_name)
 VALUES (1, '2020-08-27 13:38:22.000000', 1, 1, '2020-08-27 13:38:32.000000', 1, NULL, '2020-08-27', NULL, 'Super User',
-        'admin@mail.com', TRUE, NULL, '{bcrypt}$2a$10$R7Vy1mt8Ar6ECkR8h/mJje0QXG4EoS0Q7Jl5yX04pStUmKSz.ZfBO', NULL, 'super');
+        'admin@mail.com', TRUE, NULL, '{bcrypt}$2a$10$R7Vy1mt8Ar6ECkR8h/mJje0QXG4EoS0Q7Jl5yX04pStUmKSz.ZfBO', NULL,
+        'super');
 
 
