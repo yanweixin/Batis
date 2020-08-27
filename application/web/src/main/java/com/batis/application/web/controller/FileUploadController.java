@@ -1,6 +1,11 @@
 package com.batis.application.web.controller;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.batis.library.exception.StorageFileNotFoundException;
@@ -12,13 +17,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 @RestController
 @RequestMapping("file")
 public class FileUploadController {
+    private final static Path root = Paths.get("upload");
     private final StorageService storageService;
 
     @Autowired
@@ -55,6 +64,23 @@ public class FileUploadController {
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
         return "redirect:/";
+    }
+
+    @PostMapping("/upload")
+    public String uploadFile(HttpServletRequest request) throws IOException {
+        List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
+        if (files.isEmpty() || files.stream().allMatch(MultipartFile::isEmpty)) {
+            return "Please select file!";
+        } else {
+            if (Files.notExists(root)) {
+                Files.createDirectory(root);
+            }
+            for (MultipartFile file : files) {
+                String path = UUID.randomUUID().toString() + "-" + file.getOriginalFilename();
+                Files.copy(file.getInputStream(), this.root.resolve(path));
+            }
+            return "Upload successfully";
+        }
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)

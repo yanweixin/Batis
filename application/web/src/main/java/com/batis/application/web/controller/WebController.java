@@ -8,6 +8,11 @@ public class WebController {
 
     @GetMapping("/")
     public String mainPage() {
-        return "redirect:/";
+        return "redirect:/index.html";
+    }
+
+    @GetMapping("/doLogin")
+    public String doLogin() {
+        return "123";
     }
 }

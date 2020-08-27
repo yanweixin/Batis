@@ -8,11 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @CacheConfig(cacheNames = "user")
@@ -21,6 +25,17 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     @Autowired
     MongoUserRepository mongoUserRepository;
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> user = userRepository.findByUserName(username);
+        if (user.isEmpty()) {
+            throw new UsernameNotFoundException("Username is not present");
+        }
+        return user.get();
+    }
 
     @Override
     public Page<User> findAll(Pageable pageable) {
@@ -77,6 +92,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
 //    @Caching(put = {@CachePut(key = "#result.id"), @CachePut(key = "#result.userName")})
     public User save(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         mongoUserRepository.save(user);
         return user;
@@ -85,6 +101,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public List<User> saveAll(List<User> users) {
+        users.forEach(user -> user.setPassword(passwordEncoder.encode(user.getPassword())));
         userRepository.saveAll(users);
         mongoUserRepository.saveAll(users);
         return users;

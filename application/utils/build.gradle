@@ -1,6 +1,8 @@
 dependencies {
     api project(":library")
+    api 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter'
+    testImplementation 'org.springframework.security:spring-security-test'
 }
 
 bootJar {

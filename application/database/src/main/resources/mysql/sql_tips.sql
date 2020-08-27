@@ -9,3 +9,9 @@ WHERE CONSTRAINT_SCHEMA = 'YOUR DB HERE'
 SET foreign_key_checks = 0;
 # 重新启用外键检查
 SET foreign_key_checks = 1;
+
+# 查看当前临时表
+SELECT *
+FROM information_schema.INNODB_TEMP_TABLE_INFO;
+
+SHOW FULL PROCESSLIST;

@@ -1,5 +1,6 @@
 package com.batis.application.database.entity.base;
 
+import com.batis.application.database.entity.management.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedBy;
@@ -7,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -48,11 +50,15 @@ public abstract class BaseEntity extends IdEntity implements Serializable {
         return new Date();
     }
 
+    private User getCurrentUser(){
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
     @PrePersist
     public void preparePersist() {
         if (Objects.isNull(this.createdAt)) {
-            this.createdBy = -1L;
-            this.updatedBy = -1L;
+            this.createdBy = getCurrentUser().getId();
+            this.updatedBy = getCurrentUser().getId();
             this.createdAt = getNow();
             this.updatedAt = getNow();
             this.objectVersionNumber = 1L;
@@ -61,7 +67,7 @@ public abstract class BaseEntity extends IdEntity implements Serializable {
 
     @PreUpdate
     public void prepareUpdate() {
-        this.updatedBy = -1L;
+        this.updatedBy = getCurrentUser().getId();
         this.updatedAt = getNow();
         this.objectVersionNumber += 1;
     }

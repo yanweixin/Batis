@@ -3,8 +3,6 @@ dependencies {
     api project(":application:database")
     api project(":application:service")
     api 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    testImplementation 'org.springframework.security:spring-security-test'
 }
 
 bootJar {
