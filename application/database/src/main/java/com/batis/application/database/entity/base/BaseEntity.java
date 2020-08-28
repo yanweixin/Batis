@@ -3,10 +3,6 @@ package com.batis.application.database.entity.base;
 import com.batis.application.database.entity.management.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -15,30 +11,27 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 @MappedSuperclass
 @JsonIgnoreProperties({"createdBy", "createdAt", "updatedBy", "updatedAt", "objectVersionNumber"})
 public abstract class BaseEntity extends IdEntity implements Serializable {
     @NotNull
-    @CreatedBy
     @Column(updatable = false)
     private Long createdBy;
 
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-    @CreatedDate
     @Column(updatable = false)
     private Date createdAt;
 
     @NotNull
-    @LastModifiedBy
     private Long updatedBy;
 
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "GMT+8")
     @NotNull
-    @LastModifiedDate
     private Date updatedAt;
 
     @Version
@@ -50,13 +43,13 @@ public abstract class BaseEntity extends IdEntity implements Serializable {
         return new Date();
     }
 
-    private User getCurrentUser(){
+    private User getCurrentUser() {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     @PrePersist
     public void preparePersist() {
-        if (Objects.isNull(this.createdAt)) {
+        if (Stream.of(createdBy, createdAt, updatedBy, updatedAt).anyMatch(Objects::isNull)) {
             this.createdBy = getCurrentUser().getId();
             this.updatedBy = getCurrentUser().getId();
             this.createdAt = getNow();

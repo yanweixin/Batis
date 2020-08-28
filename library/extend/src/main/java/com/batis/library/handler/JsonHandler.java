@@ -1,11 +1,15 @@
 package com.batis.library.handler;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class JsonHandler<T> {
@@ -13,15 +17,14 @@ public class JsonHandler<T> {
 
     static {
         MAPPER_MAP = new HashMap<>();
-        MAPPER_MAP.put("default", new ObjectMapper());
-        MAPPER_MAP.put("ignores", new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false));
+        MAPPER_MAP.put("default", new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false));
     }
 
-    private  ObjectMapper getDefaultMapper(){
+    private ObjectMapper getDefaultMapper() {
         return MAPPER_MAP.get("default");
     }
 
-    private void setDefaultMapper(ObjectMapper mapper){
+    private void setDefaultMapper(ObjectMapper mapper) {
         MAPPER_MAP.put("default", mapper);
     }
 
@@ -32,12 +35,15 @@ public class JsonHandler<T> {
         setDefaultMapper(replaceDefault);
     }
 
-    public JsonHandler<T> parseJson(String json, T t) {
+    public JsonHandler<T> parseJson(String pathname) {
+
         return this;
     }
 
-    public JsonHandler<T> genericParse(String json) throws JsonProcessingException {
-        JsonNode jsonNode = getDefaultMapper().readValue(json,JsonNode.class);
+    public JsonHandler<T> genericParse(String pathName) throws IOException {
+        ObjectMapper mapper = MAPPER_MAP.get("default");
+        String json = Files.readString(Paths.get(pathName));
+        JsonNode jsonNode = mapper.readTree(json);
         return this;
     }
 

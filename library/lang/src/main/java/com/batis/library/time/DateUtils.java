@@ -1,6 +1,7 @@
 package com.batis.library.time;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -23,5 +24,9 @@ public final class DateUtils {
             dates[i] = stringToDate(sources[i]);
         }
         return dates;
+    }
+
+    public static LocalDateTime stringToLocalDate(String source) {
+        return LocalDateTime.parse(source, dateTimeFormatter);
     }
 }

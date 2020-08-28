@@ -1,15 +1,7 @@
 package com.batis.application.web.controller;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import com.batis.library.exception.StorageFileNotFoundException;
 import com.batis.application.service.StorageService;
+import com.batis.library.exception.StorageFileNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -22,6 +14,13 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @RestController
