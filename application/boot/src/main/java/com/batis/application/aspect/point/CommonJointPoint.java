@@ -6,7 +6,7 @@ import org.aspectj.lang.annotation.Pointcut;
 @Aspect
 public class CommonJointPoint {
 
-    @Pointcut("Target.atController() && Within.application()")
+    @Pointcut("(Target.atController()||Target.atRestController()) && Within.application()")
     public void onWebRequest() {
     }
 

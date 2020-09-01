@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.codec.binary.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,14 +46,13 @@ public class TestController {
             String filename = StringUtils.cleanPath(it.getOriginalFilename());
             try {
                 MessageDigest md5 = MessageDigest.getInstance("SHA-256");
-                byte[] digest = md5.digest(it.getBytes());
-                System.out.println(Arrays.toString(digest));
+                System.out.println(Hex.encodeHex(md5.digest(it.getBytes())));
             } catch (NoSuchAlgorithmException | IOException e) {
                 e.printStackTrace();
             }
 
             importLog.setFileName(filename);
-            importLog.setSource("Manual");
+            importLog.setSource("Web");
             importLog.setTarget("vulnerability");
 
             ExecutorService executorService = Executors.newSingleThreadExecutor();
