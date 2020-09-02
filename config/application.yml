@@ -23,8 +23,8 @@ spring:
     default-property-inclusion: non_null
   servlet:
     multipart:
-      max-request-size: 1GB
-      max-file-size: 100MB
+      max-request-size: 10GB
+      max-file-size: 1GB
   main:
     lazy-initialization: true
   cache:

@@ -2,8 +2,12 @@ dependencies {
     implementation "org.aspectj:aspectjrt:${aspectjVersion}"
     implementation "org.aspectj:aspectjweaver:${aspectjVersion}"
     implementation "org.apache.poi:poi-ooxml:${poiVersion}"
-    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
-    implementation "com.univocity:univocity-parsers:${univocityVersion}"
+    api "commons-codec:commons-codec:${commonsCodecVersion}"
+    api "org.apache.commons:commons-lang3:${commonsLangVersion}"
+    api "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+//    api "org.dom4j:dom4j:${dom4jVersion}"
+    api "com.univocity:univocity-parsers:${univocityVersion}"
+    api "com.google.guava:guava:${guavaVersion}"
 }
 jar {
     enabled = true
