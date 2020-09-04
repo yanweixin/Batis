@@ -3,6 +3,7 @@ package com.batis.application.web.controller;
 import com.batis.application.database.entity.audit.ImportLog;
 import com.batis.application.database.entity.bussiness.vulnerability.Cnnvd;
 import com.batis.application.database.entity.bussiness.vulnerability.Vulnerability;
+import com.batis.application.database.entity.management.User;
 import com.batis.application.service.StorageService;
 import com.batis.application.service.audit.ImportLogService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -12,22 +13,18 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
-import javax.xml.bind.*;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.file.Files;
@@ -41,7 +38,7 @@ import java.util.concurrent.Executors;
 @RestController
 @RequestMapping("test")
 public class TestController {
-    private final ImportLog importLog = new ImportLog();
+    private ImportLog importLog;
 
     @Autowired
     StorageService storageService;
@@ -58,6 +55,7 @@ public class TestController {
                 e.printStackTrace();
             }
 
+            importLog = new ImportLog();
             importLog.setFileName(filename);
             importLog.setSource("Web");
             importLog.setTarget("vulnerability");
@@ -67,6 +65,7 @@ public class TestController {
                 try {
                     storageService.store(it);
                     Path path = storageService.load(filename);
+                    importLog.setProcessAt(LocalDateTime.now());
                     if (filename.endsWith("json")) {
                         importJson(Files.readString(path));
                     } else if (filename.endsWith("xml")) {
@@ -89,8 +88,7 @@ public class TestController {
         List<Vulnerability> vulnerabilities = objectMapper.convertValue(jsonNode, new TypeReference<>() {
         });
         vulnerabilities.forEach(vulnerability -> System.out.println(vulnerability.getVulndbId()));
-
-        importLog.setMessage("Finished successfully!");
+        importLog.setMessage("Finished importing json successfully!");
         importLog.setFinishedAt(LocalDateTime.now());
         importLogService.save(importLog);
     }
@@ -104,23 +102,19 @@ public class TestController {
 //            Node node = nodeList.item(i);
 //            System.out.println(node.getNodeValue());
 //        }
+
         JAXBContext jaxbContext = JAXBContext.newInstance(Cnnvd.class);
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-        Object object = unmarshaller.unmarshal(new StringReader(xml));
-        ObjectMapper objectMapper = new ObjectMapper();
-        System.out.println(objectMapper.writeValueAsString(object));
-
         Cnnvd cnnvd = (Cnnvd) unmarshaller.unmarshal(new StringReader(xml));
 //        Cnnvd cnnvd = JAXB.unmarshal(new StringReader(xml),Cnnvd.class);
-        if (cnnvd != null) {
-            cnnvd.getVulnerabilities().forEach(
-                    it -> System.out.println(it.getName())
-            );
-        }
 
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "http://www.cnnvd.org.cn/vuln/1.0 http://www.cnnvd.org.cn/schema/vulnerability.xsd");
         marshaller.marshal(cnnvd, System.out);
+        importLog.setMessage("Finished importing xml successfully!");
+        importLog.setFinishedAt(LocalDateTime.now());
+        importLogService.save(importLog);
     }
 
 }

@@ -5,6 +5,8 @@ dependencies {
     api "commons-codec:commons-codec:${commonsCodecVersion}"
     api "org.apache.commons:commons-lang3:${commonsLangVersion}"
     api "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+//    api "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:${jacksonVersion}"
+//    api "org.eclipse.persistence:org.eclipse.persistence.moxy:3.0.0-M1"
 //    api "org.dom4j:dom4j:${dom4jVersion}"
     api "com.univocity:univocity-parsers:${univocityVersion}"
     api "com.google.guava:guava:${guavaVersion}"
