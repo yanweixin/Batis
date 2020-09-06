@@ -1,18 +1,31 @@
 package com.batis.application.database.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.PatternTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 @Configuration
 public class RedisConfig {
 
     @Autowired
     RedisConnectionFactory redisConnectionFactory;
+    @Autowired
+    MessageListener messageListener;
+    @Qualifier("default")
+    @Autowired
+    Executor executor;
 
 //    @Bean
 //    public LettuceConnectionFactory redisConnectionFactory() {
@@ -38,5 +51,23 @@ public class RedisConfig {
         template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
         template.setConnectionFactory(connectionFactory);
         return template;
+    }
+
+    /**
+     * Not required, MessageListener can be used directly
+     *
+     * @return
+     */
+    public MessageListenerAdapter messageListener() {
+        return new MessageListenerAdapter(messageListener);
+    }
+
+    @Bean
+    public RedisMessageListenerContainer container() {
+        final RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+        container.setConnectionFactory(redisConnectionFactory);
+        container.addMessageListener(messageListener(), new PatternTopic("__keyspace@*:*"));
+        container.setTaskExecutor(executor);
+        return container;
     }
 }

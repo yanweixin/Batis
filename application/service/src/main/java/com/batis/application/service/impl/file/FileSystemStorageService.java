@@ -21,6 +21,8 @@ import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
+
 @Service
 public class FileSystemStorageService implements StorageService {
 
@@ -92,10 +94,13 @@ public class FileSystemStorageService implements StorageService {
         FileSystemUtils.deleteRecursively(rootLocation.toFile());
     }
 
+    @PostConstruct
     @Override
     public void init() {
         try {
-            Files.createDirectories(rootLocation);
+            if (Files.notExists(rootLocation)) {
+                Files.createDirectories(rootLocation);
+            }
         } catch (IOException e) {
             throw new StorageException("Could not initialize storage", e);
         }
