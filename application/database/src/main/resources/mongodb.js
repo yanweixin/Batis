@@ -65,3 +65,35 @@ db.getCollection("vulnerabilities").aggregate([
   },
   { $sort: { nums: -1 } },
 ]);
+
+use app
+db.vulnerability.aggregate([
+  { $unwind: "$extReferences" },
+  {
+    $group: {
+      _id: {
+        ext_type: "$extReferences.type",
+        years: {
+          $year: "$publishDate"
+        }
+      },
+      "year_cnt": {
+        $sum: 1
+      }
+    }
+  }, {
+    $project: {
+      _id: 0,
+      group_name: "$_id.ext_type",
+      years: "$_id.years",
+      cnt: "$year_cnt"
+    }
+  }, {
+    $sort: {
+      years: -1,
+      group_name: -1
+    }
+  }, {
+
+    $limit: 1000
+  }])

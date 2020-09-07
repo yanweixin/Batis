@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
 
-import com.batis.application.service.StorageService;
+import com.batis.application.service.system.StorageService;
 import com.batis.application.utils.properties.StorageProperties;
 import com.batis.library.exception.StorageException;
 import com.batis.library.exception.StorageFileNotFoundException;

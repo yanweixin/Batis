@@ -29,13 +29,13 @@ public class AsyncExecute {
      * @param <R>      type of result
      * @return
      */
-    @Async
+    @Async("async")
     public <T, R> CompletableFuture<R> function(Function<? super T, ? extends R> function, T t) {
         Objects.requireNonNull(function);
         return CompletableFuture.completedFuture(function.apply(t));
     }
 
-    @Async
+    @Async("async")
     public <T, U, R> CompletableFuture<R> biFunction(BiFunction<? super T, ? super U, ? extends R> biFunction, T t, U u) {
         Objects.requireNonNull(biFunction);
         return CompletableFuture.completedFuture(biFunction.apply(t, u));
@@ -48,7 +48,7 @@ public class AsyncExecute {
      * @param <R>       type of result
      * @return return a list of future objects to be joined
      */
-    @Async
+    @Async("async")
     public <T, R> CompletableFuture<List<CompletableFuture<? extends R>>> batchFunction(List<Function<? super T, ? extends R>> functions, T t) {
         if (functions.stream().anyMatch(Objects::isNull)) {
             throw new NullPointerException();

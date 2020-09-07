@@ -23,7 +23,7 @@ public class RedisConfig {
     RedisConnectionFactory redisConnectionFactory;
     @Autowired
     MessageListener messageListener;
-    @Qualifier("default")
+    @Qualifier("redis")
     @Autowired
     Executor executor;
 

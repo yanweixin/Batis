@@ -1,6 +1,6 @@
 package com.batis.application.web.controller;
 
-import com.batis.application.service.StorageService;
+import com.batis.application.service.system.StorageService;
 import com.batis.library.exception.StorageFileNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
