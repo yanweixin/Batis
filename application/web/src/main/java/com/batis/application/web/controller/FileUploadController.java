@@ -9,18 +9,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.UUID;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @RestController
@@ -65,19 +63,22 @@ public class FileUploadController {
         return "redirect:/";
     }
 
+    /**
+     * Alternative : use {@code HttpServletRequest} as parameter and extract files as：
+     * <pre>
+     *     List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
+     * </pre>
+     *
+     * @param files
+     * @return
+     * @throws IOException
+     */
     @PostMapping("/upload")
-    public String uploadFile(HttpServletRequest request) throws IOException {
-        List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
-        if (files.isEmpty() || files.stream().allMatch(MultipartFile::isEmpty)) {
+    public String uploadFile(@RequestParam("files") MultipartFile[] files) throws IOException {
+        if (Stream.of(files).anyMatch(Objects::isNull)) {
             return "Please select file!";
         } else {
-            if (Files.notExists(root)) {
-                Files.createDirectory(root);
-            }
-            for (MultipartFile file : files) {
-                String path = UUID.randomUUID().toString() + "-" + file.getOriginalFilename();
-                Files.copy(file.getInputStream(), this.root.resolve(path));
-            }
+            Arrays.stream(files).forEach(storageService::store);
             return "Upload successfully";
         }
     }

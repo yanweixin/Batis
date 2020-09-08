@@ -1,7 +1,7 @@
 package com.batis.application.web.controller.management;
 
 import com.batis.application.database.entity.management.User;
-import com.batis.application.service.UserService;
+import com.batis.application.service.management.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;

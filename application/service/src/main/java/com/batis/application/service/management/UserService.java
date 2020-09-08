@@ -1,6 +1,7 @@
-package com.batis.application.service;
+package com.batis.application.service.management;
 
 import com.batis.application.database.entity.management.User;
+import com.batis.application.service.CommonService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends CommonService<User>, UserDetailsService {

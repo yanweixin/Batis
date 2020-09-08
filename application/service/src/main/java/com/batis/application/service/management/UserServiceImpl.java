@@ -1,9 +1,8 @@
-package com.batis.application.service.impl;
+package com.batis.application.service.management;
 
 import com.batis.application.database.entity.management.User;
 import com.batis.application.database.repository.jpa.management.UserRepository;
 import com.batis.application.database.repository.mongo.MongoUserRepository;
-import com.batis.application.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.*;
 import org.springframework.data.domain.Page;

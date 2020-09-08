@@ -1,4 +1,4 @@
-package com.batis.application.service.impl.ugc;
+package com.batis.application.service.ugc;
 
 import com.batis.application.database.entity.ugc.Post;
 import com.batis.application.database.repository.elastic.EsPostRepository;

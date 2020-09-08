@@ -90,3 +90,7 @@ bootJar {
 springBoot {
     mainClassName = 'com.batis.application.AppApplication'
 }
+
+wrapper {
+    distributionType = Wrapper.DistributionType.ALL
+}

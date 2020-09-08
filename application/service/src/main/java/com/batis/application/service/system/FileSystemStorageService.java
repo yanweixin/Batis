@@ -1,4 +1,4 @@
-package com.batis.application.service.impl.file;
+package com.batis.application.service.system;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,6 +31,11 @@ public class FileSystemStorageService implements StorageService {
     @Autowired
     public FileSystemStorageService(StorageProperties properties) {
         this.rootLocation = Paths.get(properties.getLocation());
+    }
+
+    @Override
+    public Path getRootLocation() {
+        return rootLocation;
     }
 
     @Override
