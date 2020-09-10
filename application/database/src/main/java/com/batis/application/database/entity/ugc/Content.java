@@ -1,6 +1,7 @@
 package com.batis.application.database.entity.ugc;
 
 import com.batis.application.database.entity.base.BaseEntity;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
+@Document(indexName = "ugc-content")
 public class Content extends BaseEntity {
     private String title;
 

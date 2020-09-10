@@ -10,6 +10,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
@@ -24,11 +25,7 @@ import java.util.*;
 @Aspect
 public class CacheAspect {
     private final static Logger LOGGER = LoggerFactory.getLogger(CacheAspect.class);
-    @Autowired
-    RedisTemplate<Object, Object> redisTemplate;
     private final static ObjectMapper mapper = new ObjectMapper();
-
-    private int sequence = 0; // A sign to set RedisSerializer with different configuration;
     private final static Map<Integer, RedisSerializer<Object>> serializerMap;
 
     static {
@@ -37,6 +34,12 @@ public class CacheAspect {
         serializerMap.put(1, new GenericJackson2JsonRedisSerializer(new ObjectMapper().enable(DeserializationFeature.USE_LONG_FOR_INTS)));
         serializerMap.put(2, new JdkSerializationRedisSerializer());
     }
+
+    @Autowired
+    RedisTemplate<Object, Object> redisTemplate;
+    @Value("${spring.cache.redis.time-to-live:60000}")
+    private Long cacheLiveTime;
+    private int sequence = 0; // A sign to set RedisSerializer with different configuration;
 
 //    @AfterReturning(pointcut = "com.batis.application.aspect.point.CommonJointPoint.onCache()&&@annotation(caching)",
 //            returning = "retVal")
@@ -88,7 +91,7 @@ public class CacheAspect {
         String methodName = methodSignature.getName();
         String declareTypeName = methodSignature.getDeclaringType().getSimpleName();
 
-        String keyPrefix = declareTypeName.substring(0, declareTypeName.length() - 11).toLowerCase();
+        String keyPrefix = declareTypeName.substring(0, declareTypeName.indexOf("Service")).toLowerCase();
         String keyName = args == null ? methodName : methodName + mapper.writeValueAsString(args);
         String key = keyPrefix + ":" + keyName;
         Object result;

@@ -3,13 +3,13 @@ package com.batis.application.service.management;
 import com.batis.application.database.entity.management.User;
 import com.batis.application.database.repository.jpa.management.UserRepository;
 import com.batis.application.database.repository.mongo.MongoUserRepository;
+import com.batis.application.service.system.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.*;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     MongoUserRepository mongoUserRepository;
     @Autowired
-    PasswordEncoder passwordEncoder;
+    SecurityService securityService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
 //    @Caching(put = {@CachePut(key = "#result.id"), @CachePut(key = "#result.userName")})
     public User save(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(securityService.encode(user.getPassword()));
         userRepository.save(user);
         mongoUserRepository.save(user);
         return user;
@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public List<User> saveAll(List<User> users) {
-        users.forEach(user -> user.setPassword(passwordEncoder.encode(user.getPassword())));
+        users.forEach(user -> user.setPassword(securityService.encode(user.getPassword())));
         userRepository.saveAll(users);
         mongoUserRepository.saveAll(users);
         return users;

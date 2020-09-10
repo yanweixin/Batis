@@ -25,8 +25,8 @@ spring:
     multipart:
       max-request-size: 10GB
       max-file-size: 1GB
-  main:
-    lazy-initialization: true
+#  main:
+#    lazy-initialization: true
   cache:
     redis:
       time-to-live: 600000 #10 minutes

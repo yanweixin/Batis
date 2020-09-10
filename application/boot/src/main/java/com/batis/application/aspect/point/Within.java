@@ -8,11 +8,11 @@ public class Within {
     public void application() {
     }
 
-    @Pointcut("within(com.batis.application.service.impl..*)")
+    @Pointcut("within(com.batis.application.service..*)")
     public void service() {
     }
 
-    @Pointcut("!within(com.batis.application.service.impl.file..*)")
+    @Pointcut("!within(com.batis.application.service.system.File*)")
     public void notFileService() {
     }
 }

@@ -8,6 +8,8 @@ public class Log extends NoSqlEntity{
 
     private String level;
 
+    private String module;
+
     private String message;
 
     public String getLevel() {
@@ -16,6 +18,14 @@ public class Log extends NoSqlEntity{
 
     public void setLevel(String level) {
         this.level = level;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
     }
 
     public String getMessage() {

@@ -2,9 +2,9 @@ package com.batis.application.web.controller.management;
 
 import com.batis.application.database.entity.management.User;
 import com.batis.application.service.management.UserService;
+import com.batis.application.service.system.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +20,7 @@ public class SecurityController {
     @Autowired
     UserService userService;
     @Autowired
-    PasswordEncoder passwordEncoder;
+    SecurityService securityService;
 
     @PutMapping("/password")
     public ResponseEntity<Object> updatePassword(@RequestBody Map<String, String> map) {
@@ -31,8 +31,8 @@ public class SecurityController {
             return ResponseEntity.badRequest().build();
         }
         User user = userService.findById(Long.parseLong(userId));
-        if (user != null && passwordEncoder.matches(oldPassword, user.getPassword()) && checkPassword(newPassword)) {
-            user.setPassword(passwordEncoder.encode(newPassword));
+        if (user != null && securityService.matches(oldPassword, user.getPassword()) && securityService.checkPassword(newPassword)) {
+            user.setPassword(newPassword);
             userService.save(user);
             return ResponseEntity.ok().build();
         }
@@ -44,23 +44,8 @@ public class SecurityController {
         return 0;
     }
 
-    @PutMapping("/honenumber")
+    @PutMapping("/phonenumber")
     public int updatePhoneNumber(@RequestBody Map<String, String> map) {
         return 0;
-    }
-
-    private Boolean checkPassword(String password){
-        if (!password.isEmpty()&&!password.isBlank()){
-            return Boolean.TRUE;
-        }
-        return Boolean.FALSE;
-    }
-
-    private Boolean checkEmail(String email){
-        return Boolean.FALSE;
-    }
-
-    private Boolean checkPhoneNumber(String phoneNumber){
-        return Boolean.FALSE;
     }
 }

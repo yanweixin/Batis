@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Document(collection = "user")
@@ -19,6 +20,9 @@ public class User extends Person implements UserDetails {
     @Column(unique = true)
 //    @NaturalId
     private String userName;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Role> roles;
 
     @Override
 //    @Id
@@ -35,11 +39,22 @@ public class User extends Person implements UserDetails {
         this.userName = userName;
     }
 
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("USER"));
+        authorities.addAll(this.roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getRoleCode()))
+                .collect(Collectors.toList())
+        );
         return authorities;
     }
 

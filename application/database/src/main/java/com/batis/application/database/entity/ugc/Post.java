@@ -1,21 +1,19 @@
 package com.batis.application.database.entity.ugc;
 
 import com.batis.application.database.entity.base.BaseEntity;
-import com.batis.application.database.entity.physics.DeviceInfo;
 import com.batis.application.database.entity.management.User;
+import com.batis.application.database.entity.physics.DeviceInfo;
 import com.fasterxml.jackson.annotation.*;
-import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Document(indexName = "ugc-post")
 public class Post extends BaseEntity {
 
     @NotNull
     @ManyToOne
-    @JsonIgnoreProperties(value = {"birthday", "enabled", "userCode"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"birthday", "enabled", "country"}, allowSetters = true)
     private User author;
 
     @NotNull

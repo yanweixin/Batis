@@ -1,9 +1,11 @@
 package com.batis.application.database.entity.management;
 
 import com.batis.application.database.entity.base.BaseEntity;
+import com.batis.application.database.entity.system.Country;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,6 +27,10 @@ public abstract class Person extends BaseEntity {
     private Date birthday;
 
     private String gender;
+
+    @NotNull
+    @ManyToOne
+    private Country country;
 
     private String address;
 
@@ -67,6 +73,14 @@ public abstract class Person extends BaseEntity {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     public String getAddress() {
