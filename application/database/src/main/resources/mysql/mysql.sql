@@ -14,6 +14,11 @@ SELECT *
 FROM post;
 SELECT *
 FROM content;
+SELECT type, value, pattern
+FROM block_list
+WHERE type = 'phonenumber'
+AND value = '^+86';
+TRUNCATE TABLE block_list;
 
 SELECT *
 FROM mysql.time_zone_name

@@ -113,7 +113,7 @@ public class CacheAspect {
             } else {
                 result = "".equals(result) ? null : result;
             }
-        } else if (StringUtils.startWith(methodName, Arrays.asList("save", "delete", "update"))) {
+        } else if (StringUtils.startWith(methodName, Arrays.asList("save", "delete", "update", "add"))) {
             result = proceedingJoinPoint.proceed(args);
             deleteKeyByPatterns(Arrays.asList(keyPrefix + ":*"));
         } else {

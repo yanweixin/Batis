@@ -19,7 +19,7 @@ public class User extends Person implements UserDetails {
     @NotNull
     @Column(unique = true)
 //    @NaturalId
-    private String userName;
+    private String username;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Role> roles;
@@ -31,12 +31,8 @@ public class User extends Person implements UserDetails {
         return super.getId();
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String userName) {
+        this.username = userName;
     }
 
     public List<Role> getRoles() {
@@ -59,9 +55,8 @@ public class User extends Person implements UserDetails {
     }
 
     @Override
-    @JsonIgnore
     public String getUsername() {
-        return getUserName();
+        return username;
     }
 
     @Override

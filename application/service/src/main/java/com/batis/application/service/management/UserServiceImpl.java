@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByUserName(username);
+        Optional<User> user = userRepository.findByUsername(username);
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("Username is not present");
         }
@@ -67,21 +67,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
 //    @Caching(cacheable = {@Cacheable(key = "#result?.id", condition = "#result!=null"),
-//            @Cacheable(key = "#result?.userName", condition = "#result!=null")})
-    public User findByUserName(String userName) {
-        return userRepository.findByUserName(userName).orElse(null);
+//            @Cacheable(key = "#result?.username", condition = "#result!=null")})
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
     }
 
     @Override
-    public User updateByUserName(String userName, User user) {
-        user.setId(findByUserName(userName).getId());
+    public User updateByUsername(String username, User user) {
+        user.setId(findByUsername(username).getId());
         return userRepository.save(user);
     }
 
     @Override
     @Transactional
-    public int deleteByUserName(String userName) {
-        User user = Objects.requireNonNull(findByUserName(userName));
+    public int deleteByUsername(String username) {
+        User user = Objects.requireNonNull(findByUsername(username));
         mongoUserRepository.delete(user);
         userRepository.delete(user);
         return 1;

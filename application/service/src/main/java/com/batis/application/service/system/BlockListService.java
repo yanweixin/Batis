@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,22 +30,36 @@ public class BlockListService {
         return blockListRepository.findAllByType(type);
     }
 
-    public BlockList addBlockList(BlockList blockList) {
-        if (blockList.isPattern()) {
-            addPattern(blockList.getType(), blockList.getValue());
+//    public BlockList addBlockList(BlockList blockList) {
+//        if (blockList.isPattern()) {
+//            addPattern(blockList.getType(), blockList.getValue());
+//        }
+//        return blockListRepository.save(blockList);
+//    }
+
+    public List<BlockList> addBlockLists(List<BlockList> blockLists) {
+        List<BlockList> blocks = blockLists.stream()
+                .filter(blockList -> blockListRepository.findByTypeAndValue(blockList.getType(), blockList.getValue()).isEmpty())
+                .collect(Collectors.toList());
+        if (blocks.size() == 0) {
+            return null;
         }
-        return blockListRepository.save(blockList);
+        blocks.stream()
+                .filter(BlockList::isPattern)
+                .forEach(blockList -> addPattern(blockList.getType(), blockList.getValue()));
+        return blockListRepository.saveAll(blocks);
     }
 
     @PostConstruct
     public void setPatterns() {
-        final Stream<BlockList> blockLists = blockListRepository.findAll().stream()
-                .filter(BlockList::isPattern);
+        final List<BlockList> blockLists = blockListRepository.findAllByPattern(true);
         final Stream<String> types = blockLists
+                .stream()
                 .map(BlockList::getType)
                 .distinct();
         types.forEach(
                 type -> patterns.put(type, blockLists
+                        .stream()
                         .filter(it -> it.getType().equals(type))
                         .map(blockList -> Pattern.compile(blockList.getValue()))
                         .collect(Collectors.toList())
@@ -57,8 +72,14 @@ public class BlockListService {
         return patterns;
     }
 
-    private void addPattern(String type, String value) {
+    private synchronized void addPattern(String type, String value) {
         Pattern pattern = Pattern.compile(value);
-        patterns.get(type).add(pattern);
+        if (this.patterns.get(type) == null) {
+            List<Pattern> patterns = new ArrayList<>();
+            patterns.add(pattern);
+            this.patterns.put(type, patterns);
+        } else {
+            this.patterns.get(type).add(pattern);
+        }
     }
 }

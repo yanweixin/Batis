@@ -28,6 +28,14 @@ public class SecurityService {
         return passwordEncoder.matches(raw, encoded);
     }
 
+    public Boolean checkUsername(String username){
+        List<BlockList> blockList = blockListService.findAllByType("username");
+        if (blockList.stream().filter(it -> !it.isPattern()).anyMatch(it -> username.contains(it.getValue()))) {
+            return Boolean.FALSE;
+        }
+        return Boolean.TRUE;
+    }
+
     public Boolean checkPassword(String password) {
         if (!password.isEmpty() && !password.isBlank()) {
             return Boolean.TRUE;

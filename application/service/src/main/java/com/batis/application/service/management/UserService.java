@@ -5,11 +5,11 @@ import com.batis.application.service.CommonService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends CommonService<User>, UserDetailsService {
-    User findByUserName(String userName);
+    User findByUsername(String username);
 
-    int deleteByUserName(String userName);
+    int deleteByUsername(String username);
 
     User updateById(Long userId, User user);
 
-    User updateByUserName(String userName, User user);
+    User updateByUsername(String username, User user);
 }

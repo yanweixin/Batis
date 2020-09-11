@@ -9,10 +9,10 @@ import java.util.Optional;
 
 public interface UserRepository extends CustomQuery<User, Long> {
 
-    @Query(name = "User.byUserName", nativeQuery = true)
-    Optional<User> findByUserName(String userName);
+    @Query(name = "User.findByUsername", nativeQuery = true)
+    Optional<User> findByUsername(String username);
 
     List<User> findByDisplayName(String displayName);
 
-    boolean existsByUserName(String userName);
+    boolean existsByUsername(String username);
 }

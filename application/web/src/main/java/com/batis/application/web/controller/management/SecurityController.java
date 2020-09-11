@@ -1,15 +1,15 @@
 package com.batis.application.web.controller.management;
 
 import com.batis.application.database.entity.management.User;
+import com.batis.application.database.entity.system.BlockList;
 import com.batis.application.service.management.UserService;
+import com.batis.application.service.system.BlockListService;
 import com.batis.application.service.system.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -21,6 +21,8 @@ public class SecurityController {
     UserService userService;
     @Autowired
     SecurityService securityService;
+    @Autowired
+    BlockListService blockListService;
 
     @PutMapping("/password")
     public ResponseEntity<Object> updatePassword(@RequestBody Map<String, String> map) {
@@ -47,5 +49,14 @@ public class SecurityController {
     @PutMapping("/phonenumber")
     public int updatePhoneNumber(@RequestBody Map<String, String> map) {
         return 0;
+    }
+
+    @PostMapping("/blocklist")
+    public ResponseEntity<Object> addBlockLists(@RequestBody List<BlockList> blockLists) {
+        List<BlockList> result = blockListService.addBlockLists(blockLists);
+        if (result == null) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok().body(result);
     }
 }
