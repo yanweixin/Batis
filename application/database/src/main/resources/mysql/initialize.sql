@@ -12,3 +12,10 @@ INSERT INTO app.role(id, created_at, created_by, object_version_number, updated_
 VALUES (1, '2020-08-27 13:38:22.000000', 1, 1, '2020-08-27 13:38:32.000000', 1, '', 'ADMIN', '管理员');
 INSERT INTO app.user_roles
 VALUES (1, 1);
+
+# Internationalization
+INSERT INTO app.language(code, `primary`, secondary)
+VALUES ('zh-CN', 'Chinese', 'Simplified'),
+       ('zh-TW', 'Chinese', 'Traditional'),
+       ('en-US', 'English', 'US'),
+       ('en-UK', 'English', 'UK');

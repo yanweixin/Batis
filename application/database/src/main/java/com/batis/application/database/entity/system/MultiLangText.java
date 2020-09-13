@@ -6,10 +6,19 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Description extends IdEntity {
+public class MultiLangText extends IdEntity {
+    private Integer textId;
     @ManyToOne
     private Language language;
-    private String value;
+    private String text;
+
+    public Integer getTextId() {
+        return textId;
+    }
+
+    public void setTextId(Integer textId) {
+        this.textId = textId;
+    }
 
     public Language getLanguage() {
         return language;
@@ -19,11 +28,11 @@ public class Description extends IdEntity {
         this.language = language;
     }
 
-    public String getValue() {
-        return value;
+    public String getText() {
+        return text;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setText(String text) {
+        this.text = text;
     }
 }

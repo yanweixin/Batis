@@ -1,6 +1,7 @@
 package com.batis.application.database.entity.management;
 
 import com.batis.application.database.entity.base.BaseEntity;
+import com.batis.application.database.entity.system.MultiLangText;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,7 +9,6 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 public class Role extends BaseEntity {
-
     @NotNull
     @Column(unique = true)
     private String roleCode;
@@ -16,7 +16,10 @@ public class Role extends BaseEntity {
     @NotNull
     private String roleName;
 
-    private String description;
+    /**
+     * Refer to {@link MultiLangText#getTextId()}
+     */
+    private Integer description;
 
     public String getRoleCode() {
         return roleCode;
@@ -34,11 +37,11 @@ public class Role extends BaseEntity {
         this.roleName = roleName;
     }
 
-    public String getDescription() {
+    public Integer getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(Integer description) {
         this.description = description;
     }
 }
