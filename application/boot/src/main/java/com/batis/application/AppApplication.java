@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication(scanBasePackages = "com.batis")
 @EnableConfigurationProperties(StorageProperties.class)
-@EnableAsync
 public class AppApplication {
     private final static Logger logger = LoggerFactory.getLogger(AppApplication.class);
 

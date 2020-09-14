@@ -9,7 +9,7 @@ VALUES (1, '2020-08-27 13:38:22.000000', 1, 1, '2020-08-27 13:38:32.000000', 1, 
         'super', 'CN');
 INSERT INTO app.role(id, created_at, created_by, object_version_number, updated_at, updated_by, description, role_code,
                      role_name)
-VALUES (1, '2020-08-27 13:38:22.000000', 1, 1, '2020-08-27 13:38:32.000000', 1, '', 'ADMIN', '管理员');
+VALUES (1, '2020-08-27 13:38:22.000000', 1, 1, '2020-08-27 13:38:32.000000', 1, NULL, 'ADMIN', '管理员');
 INSERT INTO app.user_roles
 VALUES (1, 1);
 
