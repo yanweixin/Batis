@@ -16,7 +16,7 @@ public class FileWatcherService {
     public FileWatcherService(StorageService storageService, @Qualifier("default") Executor executor) throws IOException {
         this.pathWatcher = new PathWatcher(true, storageService.getRootLocation()) {
             @Override
-            public void operation(Path file, WatchEvent.Kind kind) {
+            public void operation(Path file, WatchEvent.Kind<?> kind) {
                 super.operation(file, kind);
             }
         };

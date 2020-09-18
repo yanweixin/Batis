@@ -28,7 +28,7 @@ public class SecurityService {
         return passwordEncoder.matches(raw, encoded);
     }
 
-    public Boolean checkUsername(String username){
+    public Boolean checkUsername(String username) {
         List<BlockList> blockList = blockListService.findAllByType("username");
         if (blockList.stream().filter(it -> !it.isPattern()).anyMatch(it -> username.contains(it.getValue()))) {
             return Boolean.FALSE;
@@ -53,6 +53,17 @@ public class SecurityService {
 
     public Boolean checkPhoneNumber(String phoneNumber) {
         if (patterns.get("phonenumber").stream().anyMatch(it -> it.matcher(phoneNumber).matches())) {
+            return Boolean.FALSE;
+        }
+        return Boolean.TRUE;
+    }
+
+    public Boolean filterIp(String ip) {
+        List<BlockList> blockList = blockListService.findAllByType("ip");
+        if (blockList.stream().filter(it -> !it.isPattern()).anyMatch(it -> ip.equals(it.getValue()))) {
+            return Boolean.FALSE;
+        }
+        if (patterns.get("ip").stream().anyMatch(it -> it.matcher(ip).matches())) {
             return Boolean.FALSE;
         }
         return Boolean.TRUE;

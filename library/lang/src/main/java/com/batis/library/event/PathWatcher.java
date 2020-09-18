@@ -92,7 +92,7 @@ public class PathWatcher implements GenericWatcher<Path> {
         }
     }
 
-    public void operation(Path file, WatchEvent.Kind kind) {
+    public void operation(Path file, WatchEvent.Kind<?> kind) {
         LOGGER.info("{}:{}", file.toString(), kind.name());
     }
 
@@ -117,7 +117,7 @@ public class PathWatcher implements GenericWatcher<Path> {
             }
 
             for (WatchEvent<?> event : key.pollEvents()) {
-                WatchEvent.Kind kind = event.kind();
+                WatchEvent.Kind<?> kind = event.kind();
 
                 // TBD - provide example of how OVERFLOW event is handled
                 if (kind == OVERFLOW) {
