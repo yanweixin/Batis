@@ -12,4 +12,10 @@ public class Execution {
     @Pointcut("execution(public !void com.batis.application.database.repository.jpa..*(..))")
     public void jpaRepositoryMethod() {
     }
+
+    @Pointcut("execution(public void send(..))")
+    public void utilsMqSendMethod(){}
+
+    @Pointcut("execution(public void receive(..))")
+    public void utilsMqReceiveMethod(){}
 }

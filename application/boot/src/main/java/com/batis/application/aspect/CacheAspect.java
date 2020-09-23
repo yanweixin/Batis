@@ -80,7 +80,7 @@ public class CacheAspect {
      * @return
      * @throws Throwable
      */
-    @Around("com.batis.application.aspect.point.CommonJointPoint.onServiceCache()")
+    @Around("com.batis.application.aspect.point.CommonPointcuts.onServiceCache()")
     public Object onJpaRepositoryAction(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         Object[] args = proceedingJoinPoint.getArgs();
         MethodSignature methodSignature = (MethodSignature) proceedingJoinPoint.getSignature();

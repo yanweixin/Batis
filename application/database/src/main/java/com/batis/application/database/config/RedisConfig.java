@@ -63,7 +63,7 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisMessageListenerContainer container() {
+    public RedisMessageListenerContainer redisContainer() {
         final RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(redisConnectionFactory);
         container.addMessageListener(messageListener(), new PatternTopic("__keyspace@*:*"));

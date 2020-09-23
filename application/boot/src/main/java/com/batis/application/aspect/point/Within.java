@@ -15,4 +15,7 @@ public class Within {
     @Pointcut("!within(com.batis.application.service.system.File*)")
     public void notFileService() {
     }
+
+    @Pointcut("within(com.batis.application.utils.mq..*)")
+    public void utilsMq(){}
 }

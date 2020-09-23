@@ -6,12 +6,16 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
     host: dev-server
-#    password: Passw0rd
-#    cluster:
-#      nodes: dev-server:7000,dev-server:7001,dev-server:7002,dev-server:7003,dev-server:7004,dev-server:7005
+  #    password: Passw0rd
+  #    cluster:
+  #      nodes: dev-server:7000,dev-server:7001,dev-server:7002,dev-server:7003,dev-server:7004,dev-server:7005
   elasticsearch:
     rest:
       uris: http://dev-server:9200
+  rabbitmq:
+    host: dev-server
+    username: user
+    password: password
   jpa:
     properties:
       hibernate:
@@ -27,8 +31,8 @@ spring:
     multipart:
       max-request-size: 10GB
       max-file-size: 1GB
-#  main:
-#    lazy-initialization: true
+  #  main:
+  #    lazy-initialization: true
   cache:
     redis:
       time-to-live: 600000 #10 minutes

@@ -15,7 +15,7 @@ import java.util.Arrays;
 public class WebAspect {
     private final static Logger LOGGER = LoggerFactory.getLogger(WebAspect.class);
 
-    @Before("com.batis.application.aspect.point.CommonJointPoint.onWebRequest()")
+    @Before("com.batis.application.aspect.point.CommonPointcuts.onWebRequest()")
     public void onWebRequest(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();

@@ -4,7 +4,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 
 @Aspect
-public class CommonJointPoint {
+public class CommonPointcuts {
 
     @Pointcut("(Target.atController()||Target.atRestController()) && Within.application()")
     public void onWebRequest() {
@@ -24,5 +24,9 @@ public class CommonJointPoint {
 
     @Pointcut("Within.service() && Within.notFileService()")
     public void onServiceCache() {
+    }
+
+    @Pointcut("Within.utilsMq()&&(Execution.utilsMqSendMethod()||Execution.utilsMqReceiveMethod())")
+    public void onMessageSendOrReceive() {
     }
 }
