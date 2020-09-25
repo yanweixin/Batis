@@ -1,4 +1,4 @@
-package com.batis.application.database.config;
+package com.batis.application.config;
 
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;

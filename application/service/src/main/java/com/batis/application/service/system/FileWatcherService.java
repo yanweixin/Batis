@@ -1,7 +1,6 @@
 package com.batis.application.service.system;
 
 import com.batis.library.event.PathWatcher;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -13,7 +12,7 @@ import java.util.concurrent.Executor;
 public class FileWatcherService {
     private final PathWatcher pathWatcher;
 
-    public FileWatcherService(StorageService storageService, @Qualifier("default") Executor executor) throws IOException {
+    public FileWatcherService(StorageService storageService, Executor executor) throws IOException {
         this.pathWatcher = new PathWatcher(true, storageService.getRootLocation()) {
             @Override
             public void operation(Path file, WatchEvent.Kind<?> kind) {

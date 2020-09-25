@@ -11,9 +11,9 @@ public class UserCredentials implements UserDetails {
     private String password;
     private String email;
     private String phoneNumber;
-    private Boolean enabled;
+    private boolean enabled;
 
-    public UserCredentials(Long id, String username, String password, String email, String phoneNumber, Boolean enabled) {
+    public UserCredentials(Long id, String username, String password, String email, String phoneNumber, boolean enabled) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -34,33 +34,43 @@ public class UserCredentials implements UserDetails {
         return username;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
-
     public void setUsername(String username) {
         this.username = username;
     }
 
     @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
+//        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+//        authorities.addAll(this.roles.stream()
+//                .map(role -> new SimpleGrantedAuthority(role.getRoleCode()))
+//                .collect(Collectors.toList())
+//        );
+//        return authorities;
     }
 
     public String getPassword() {
@@ -85,13 +95,5 @@ public class UserCredentials implements UserDetails {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
     }
 }

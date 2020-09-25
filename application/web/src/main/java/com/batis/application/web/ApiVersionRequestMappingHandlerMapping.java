@@ -3,6 +3,7 @@ package com.batis.application.web;
 import com.batis.library.annotation.ApiVersion;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.servlet.mvc.condition.RequestCondition;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import java.lang.reflect.Method;
@@ -16,12 +17,14 @@ public class ApiVersionRequestMappingHandlerMapping extends RequestMappingHandle
         this.apiPrefix = apiPrefix;
     }
 
+    @Override
+    protected RequestMappingInfo getMappingForMethod(Method method, Class<?> handlerType) {
+        RequestMappingInfo requestMappingInfo = super.getMappingForMethod(method, handlerType);
+        if (requestMappingInfo != null) {
 
-//    @Override
-//    protected RequestMappingInfo getMappingForMethod(Method method, Class<?> handlerType) {
-////        RequestMappingInfo requestMappingInfo = super.getMappingForMethod(method, handlerType);
-//        return super.getMappingForMethod(method, handlerType);
-//    }
+        }
+        return requestMappingInfo;
+    }
 
     @Override
     protected RequestCondition<?> getCustomTypeCondition(Class<?> handlerType) {
@@ -36,6 +39,7 @@ public class ApiVersionRequestMappingHandlerMapping extends RequestMappingHandle
     }
 
     private RequestCondition<?> createApiCondition(ApiVersion apiVersion) {
-        return apiVersion == null ? new ApiVersionCondition(new int[]{1}) : new ApiVersionCondition(apiVersion.value());
+        return new ApiVersionCondition(apiVersion);
+//        return apiVersion == null ? null : new ApiVersionCondition(apiVersion.value(),apiVersion.backwardCompatible());
     }
 }

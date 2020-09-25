@@ -15,6 +15,8 @@ public interface UserRepository extends CustomQuery<User, Long> {
 
     List<UserCredentials> findAllByEnabled(boolean enabled);
 
+    Optional<UserCredentials> findUserCredentialsByUsername(String username);
+
     List<User> findByDisplayName(String displayName);
 
     boolean existsByUsername(String username);

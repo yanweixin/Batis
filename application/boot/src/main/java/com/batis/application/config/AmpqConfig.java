@@ -1,36 +1,67 @@
 package com.batis.application.config;
 
-import com.batis.application.utils.mq.MessageReceiver;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
-import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 
 @Configuration
 public class AmpqConfig {
-    static final String topicExchangeName = "spring-boot-exchange";
-
-    static final String queueName = "spring-boot";
+    static final String prefix = "spring-boot.";
 
     @Bean
-    Queue queue() {
-        return new Queue(queueName, false);
+    Queue defaultQueue() {
+        return new Queue(prefix + "default", false);
     }
 
     @Bean
-    TopicExchange exchange() {
-        return new TopicExchange(topicExchangeName);
+    Queue durableQueue() {
+        return new Queue(prefix + "durable");
     }
 
     @Bean
-    Binding binding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with("foo.bar.#");
+    Queue autoDeleteQueue() {
+        return new AnonymousQueue();
+    }
+
+    @Bean
+    DirectExchange directExchange() {
+        return new DirectExchange(prefix + "direct-exchange");
+    }
+
+    @Bean
+    FanoutExchange fanoutExchange() {
+        return new FanoutExchange(prefix + "fanout-exchange");
+    }
+
+    @Bean
+    HeadersExchange headersExchange() {
+        return new HeadersExchange(prefix + "headers-exchange");
+    }
+
+    @Bean
+    TopicExchange topicExchange() {
+        return new TopicExchange(prefix + "topic-exchange");
+    }
+
+    @Bean
+    Binding bindingDirect(Queue defaultQueue, DirectExchange exchange) {
+        return BindingBuilder.bind(defaultQueue).to(exchange).with(defaultQueue.getName());
+    }
+
+    @Bean
+    Binding bindingFanout(Queue defaultQueue, FanoutExchange exchange) {
+        return BindingBuilder.bind(defaultQueue).to(exchange);
+    }
+
+//    @Bean
+//    Binding bindingHeaders(Queue defaultQueue, HeadersExchange exchange) {
+//        return BindingBuilder.bind(queue).to(exchange).where();
+//    }
+
+    @Bean
+    Binding bindingTopic(Queue defaultQueue, TopicExchange exchange) {
+        return BindingBuilder.bind(defaultQueue).to(exchange).with(defaultQueue.getName());
     }
 
 //    @Bean

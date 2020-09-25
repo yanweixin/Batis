@@ -10,11 +10,14 @@ import org.springframework.scheduling.annotation.Scheduled;
 @EnableScheduling
 public class SchedulerConfig {
     @Autowired
-    MessageSender messageSender;
+    MessageSender rabbitMessageSender;
+    @Autowired
+    MessageSender fanoutMessageSender;
 
     @Scheduled(fixedDelay = 1000, initialDelay = 500)
     public void send() {
         String message = "Hello World!";
-        messageSender.send(message);
+//        rabbitMessageSender.send(message);
+//        fanoutMessageSender.send(message);
     }
 }

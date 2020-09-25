@@ -52,6 +52,4 @@ spring:
         - ./library/extend/build/classes/java/main
         - ./library/lang/build/classes/java/main
 server:
-  servlet:
-    context-path: /api
   port: 3333

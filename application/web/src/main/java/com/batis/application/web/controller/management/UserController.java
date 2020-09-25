@@ -6,6 +6,7 @@ import com.batis.library.annotation.ApiVersion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,8 +36,11 @@ public class UserController {
     }
 
     @DeleteMapping("/u/{id}")
-    public int deleteUserById(@PathVariable Long id) {
-        return userService.deleteById(id);
+    public ResponseEntity<?> deleteUserById(@PathVariable Long id) {
+        if (userService.deleteById(id) == 1) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @GetMapping("/{username}")

@@ -11,7 +11,7 @@ import java.util.concurrent.Executor;
 @EnableAsync
 public class TaskConfig {
 
-    @Bean(name = {"default", "async", "redis"})
+    @Bean(name = {"executor", "async", "redis"})
     public Executor taskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(20);
