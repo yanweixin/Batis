@@ -22,7 +22,7 @@ public class Post extends BaseEntity {
     private DeviceInfo deviceInfo;
 
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Content content;
 
     @ManyToOne

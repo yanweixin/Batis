@@ -1,8 +1,6 @@
 package com.batis.application.database;
 
-import com.batis.application.database.entity.audit.SpringSecurityAuditorAware;
 import com.batis.application.database.entity.audit.StringIdAudit;
-import com.batis.application.database.entity.management.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +17,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @Configuration
 //@EnableJpaRepositories(basePackages = "com.batis.application.database.repository.jpa")
 //@EnableElasticsearchRepositories(basePackages = "com.batis.application.database.repository.elastic")
+//namedQueriesLocation = "classpath:META-INF/elasticsearch-named-queries.properties"
 @EnableJpaRepositories(includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = JpaRepository.class))
 @EnableElasticsearchRepositories(includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = ElasticsearchRepository.class))
 @EnableMongoRepositories(includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = MongoRepository.class))

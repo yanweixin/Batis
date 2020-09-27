@@ -34,4 +34,9 @@ public class PostController {
     public List<Post> addPost(@RequestBody List<Post> posts) {
         return postService.saveAll(posts);
     }
+
+    @PutMapping("/{id}")
+    public Post updatePost(@PathVariable("id") Long id, @RequestBody Post post) {
+        return postService.updateById(id, post);
+    }
 }

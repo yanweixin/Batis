@@ -4,6 +4,8 @@ import com.batis.application.database.entity.management.User;
 import com.batis.application.database.repository.jpa.management.UserRepository;
 import com.batis.application.database.repository.mongo.MongoUserRepository;
 import com.batis.application.service.system.SecurityService;
+import com.batis.application.utils.ExtendedReflectUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.data.domain.Page;
@@ -74,8 +76,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateByUsername(String username, User user) {
-        user.setId(findByUsername(username).getId());
-        return userRepository.save(user);
+        User source = findByUsername(username);
+        BeanUtils.copyProperties(user, source, ExtendedReflectUtils.getNullPropertyNames(user));
+        return userRepository.save(source);
     }
 
     @Override

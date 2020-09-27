@@ -13,6 +13,8 @@ public interface CommonService<T> {
 
     T save(T t);
 
+    T updateById(Long id, T t);
+
     List<T> saveAll(List<T> ts);
 
     int deleteById(Long id);

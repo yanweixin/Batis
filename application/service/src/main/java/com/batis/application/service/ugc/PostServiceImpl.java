@@ -6,12 +6,16 @@ import com.batis.application.database.repository.elastic.ContentRepository;
 import com.batis.application.database.repository.jpa.base.DeviceInfoRepository;
 import com.batis.application.database.repository.jpa.management.UserRepository;
 import com.batis.application.database.repository.jpa.ugc.PostRepository;
+import com.batis.application.utils.ExtendedReflectUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,10 +39,20 @@ public class PostServiceImpl implements PostService {
         return postRepository.findAll(pageable);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Post save(Post post) {
+        postRepository.save(post);
         contentRepository.save(post.getContent());
-        return postRepository.save(post);
+        return post;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Post updateById(Long id, Post post) {
+        Post source = Objects.requireNonNull(findById(id));
+        BeanUtils.copyProperties(post, source, ExtendedReflectUtils.getNullPropertyNames(post));
+        return save(source);
     }
 
     @Override

@@ -31,10 +31,6 @@ public class User extends Person implements UserDetails {
         return super.getId();
     }
 
-    public void setUsername(String userName) {
-        this.username = userName;
-    }
-
     public List<Role> getRoles() {
         return roles;
     }
@@ -47,16 +43,22 @@ public class User extends Person implements UserDetails {
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.addAll(this.roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRoleCode()))
-                .collect(Collectors.toList())
-        );
+        if (this.roles != null) {
+            authorities.addAll(this.roles.stream()
+                    .map(role -> new SimpleGrantedAuthority(role.getRoleCode()))
+                    .collect(Collectors.toList())
+            );
+        }
         return authorities;
     }
 
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public void setUsername(String userName) {
+        this.username = userName;
     }
 
     @Override
