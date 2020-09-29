@@ -19,7 +19,7 @@ public class RabbitMessageSender implements MessageSender {
     private Queue autoDeleteQueue;
 
     @Override
-    public void send(String message) {
+    public void send(Object message) {
         this.template.convertAndSend(this.queue.getName(),message);
     }
 }

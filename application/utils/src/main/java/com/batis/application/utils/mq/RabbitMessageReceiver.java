@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 public class RabbitMessageReceiver implements MessageReceiver {
     @RabbitHandler
     @Override
-    public void receive(String in) {
-
+    public void receive(Object in) {
     }
 }

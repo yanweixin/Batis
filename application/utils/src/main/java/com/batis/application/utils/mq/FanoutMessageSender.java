@@ -19,7 +19,7 @@ public class FanoutMessageSender implements MessageSender {
     private Queue queue;
 
     @Override
-    public void send(String message) {
+    public void send(Object message) {
         this.template.convertAndSend(this.fanoutExchange.getName(), this.queue.getName(), message);
     }
 }

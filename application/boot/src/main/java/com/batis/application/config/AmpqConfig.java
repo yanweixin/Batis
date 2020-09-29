@@ -15,6 +15,11 @@ public class AmpqConfig {
     }
 
     @Bean
+    Queue notifyQueue() {
+        return new Queue(prefix + "notify", false);
+    }
+
+    @Bean
     Queue durableQueue() {
         return new Queue(prefix + "durable");
     }
@@ -54,6 +59,11 @@ public class AmpqConfig {
         return BindingBuilder.bind(defaultQueue).to(exchange);
     }
 
+    @Bean
+    Binding bindingNotify(Queue notifyQueue, FanoutExchange exchange) {
+        return BindingBuilder.bind(notifyQueue).to(exchange);
+    }
+
 //    @Bean
 //    Binding bindingHeaders(Queue defaultQueue, HeadersExchange exchange) {
 //        return BindingBuilder.bind(queue).to(exchange).where();
@@ -66,14 +76,14 @@ public class AmpqConfig {
 
 //    @Bean
 //    SimpleMessageListenerContainer messageContainer(ConnectionFactory connectionFactory,
-//                                             MessageListenerAdapter listenerAdapter) {
+//                                                    MessageListenerAdapter listenerAdapter) {
 //        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 //        container.setConnectionFactory(connectionFactory);
-//        container.setQueueNames(queueName);
+//        container.setQueueNames(prefix + "default");
 //        container.setMessageListener(listenerAdapter);
 //        return container;
 //    }
-
+//
 //    @Bean
 //    MessageListenerAdapter listenerAdapter(MessageReceiver receiver) {
 //        return new MessageListenerAdapter(receiver, "receive");
