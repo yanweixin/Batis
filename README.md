@@ -4,7 +4,7 @@
 ### Redis
 redis-cli:
 ```shell script
-CONFIG SET requirepass "PassW0rds"
+CONFIG SET requirepass Passw0rd
 CONFIG set notify-keyspace-events Kx
 ```
 或者redis.conf:

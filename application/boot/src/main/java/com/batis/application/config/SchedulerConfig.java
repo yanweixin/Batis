@@ -6,8 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import java.nio.charset.StandardCharsets;
-
 @Configuration
 @EnableScheduling
 public class SchedulerConfig {
@@ -18,9 +16,9 @@ public class SchedulerConfig {
 
     @Scheduled(fixedDelay = 1000, initialDelay = 500)
     public void send() {
-        String message = "Hello World!";
+        String message = "Hello World! ";
 //        rabbitMessageSender.send(message);
         //message.getBytes(StandardCharsets.UTF_8)
-        fanoutMessageSender.send(message.getBytes(StandardCharsets.UTF_8));
+        fanoutMessageSender.send(message);
     }
 }

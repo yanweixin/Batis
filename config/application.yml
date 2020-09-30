@@ -6,7 +6,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
     host: dev-server
-  #    password: Passw0rd
+    password: Passw0rd
   #    cluster:
   #      nodes: dev-server:7000,dev-server:7001,dev-server:7002,dev-server:7003,dev-server:7004,dev-server:7005
   elasticsearch:
