@@ -5,6 +5,7 @@ allprojects {
 dependencies {
 	api project(":library:lang")
 	api project(":library:extend")
+	api project(":library:clib")
 }
 
 jar {

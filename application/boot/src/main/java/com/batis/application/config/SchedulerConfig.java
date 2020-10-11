@@ -14,11 +14,11 @@ public class SchedulerConfig {
     @Autowired
     MessageSender fanoutMessageSender;
 
-    @Scheduled(fixedDelay = 1000, initialDelay = 500)
-    public void send() {
-        String message = "Hello World! ";
-//        rabbitMessageSender.send(message);
-        //message.getBytes(StandardCharsets.UTF_8)
-        fanoutMessageSender.send(message);
-    }
+//    @Scheduled(fixedDelay = 1000, initialDelay = 500)
+//    public void send() {
+//        String message = "Hello World! ";
+////        rabbitMessageSender.send(message);
+//        //message.getBytes(StandardCharsets.UTF_8)
+//        fanoutMessageSender.send(message);
+//    }
 }
