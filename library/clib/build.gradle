@@ -7,10 +7,10 @@ test {
 }
 
 model {
-    flavors {
-        passing
-        failing
-    }
+//    flavors {
+//        passing
+//        failing
+//    }
 
     platforms {
         x86 {
