@@ -6,7 +6,6 @@ import com.batis.application.database.repository.mongo.MongoUserRepository;
 import com.batis.application.service.system.SecurityService;
 import com.batis.application.utils.ExtendedReflectUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,25 +16,26 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @CacheConfig(cacheNames = "user")
 public class UserServiceImpl implements UserService {
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    MongoUserRepository mongoUserRepository;
-    @Autowired
-    SecurityService securityService;
+    private final UserRepository userRepository;
+    private final MongoUserRepository mongoUserRepository;
+    private final SecurityService securityService;
+
+    public UserServiceImpl(UserRepository userRepository,
+                           MongoUserRepository mongoUserRepository,
+                           SecurityService securityService) {
+        this.userRepository = userRepository;
+        this.mongoUserRepository = mongoUserRepository;
+        this.securityService = securityService;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByUsername(username);
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException("Username is not present");
-        }
-        return user.get();
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Username is not present"));
     }
 
     @Override

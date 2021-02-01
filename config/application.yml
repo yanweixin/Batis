@@ -13,6 +13,7 @@ spring:
       uris: [ http://dev-server:9201 ,http://dev-server:9202 ,http://dev-server:9203 ]
   rabbitmq:
     host: dev-server
+    port: 5670
     username: rabbit
     password: Passw0rd
   jpa:
